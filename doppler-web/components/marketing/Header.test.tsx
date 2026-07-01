@@ -8,7 +8,7 @@ describe("Header", () => {
     expect(screen.getByText("Doppler")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Servicios" })).toHaveAttribute("href", "#servicios");
     expect(screen.getByRole("link", { name: "IA para Empresas" })).toHaveAttribute("href", "#ia");
-    expect(screen.getByRole("link", { name: "Nosotros" })).toHaveAttribute("href", "#clientes");
+    expect(screen.getByRole("link", { name: "Clientes" })).toHaveAttribute("href", "#clientes");
     expect(screen.getByRole("link", { name: "Contacto" })).toHaveAttribute("href", "#contacto");
     expect(screen.getByRole("link", { name: "Hablemos" })).toHaveAttribute("href", "#contacto");
   });

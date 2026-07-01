@@ -14,6 +14,10 @@ const config: Config = {
         accent: "#1E7A4C",
         foreground: "#F5F5F4",
         muted: "#A1A1AA",
+        danger: "#F87171",
+      },
+      fontFamily: {
+        sans: ["var(--font-geist-sans)"],
       },
     },
   },

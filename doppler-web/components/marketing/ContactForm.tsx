@@ -82,7 +82,7 @@ export default function ContactForm() {
             <p className="text-sm text-accent">¡Gracias! Te vamos a contactar pronto.</p>
           )}
           {status === "error" && (
-            <p className="text-sm text-red-400">
+            <p className="text-sm text-danger">
               No pudimos enviar tu mensaje. Probá de nuevo en unos minutos.
             </p>
           )}
