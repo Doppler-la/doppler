@@ -1138,9 +1138,14 @@ describe("Testimonials", () => {
   it("renders every quote and author", () => {
     render(<Testimonials />);
     testimonials.forEach((t) => {
-      expect(screen.getByText(t.quote)).toBeInTheDocument();
-      expect(screen.getByText(t.author)).toBeInTheDocument();
+      // exact: false because the component wraps the quote in curly-quote
+      // characters ("“…”"), so the quote text is a substring of the
+      // paragraph's text content, not an exact match.
+      expect(screen.getByText(t.quote, { exact: false })).toBeInTheDocument();
     });
+    // content.ts's placeholder testimonials all share the same author name
+    // ("Nombre Apellido"), so assert the count instead of a per-item lookup.
+    expect(screen.getAllByText(testimonials[0].author).length).toBe(testimonials.length);
   });
 });
 ```
@@ -1169,7 +1174,7 @@ export default function Testimonials() {
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {testimonials.map((t) => (
             <blockquote
-              key={t.author}
+              key={t.quote}
               className="rounded-lg border border-primary/40 bg-background p-6"
             >
               <p className="text-sm italic text-muted">&ldquo;{t.quote}&rdquo;</p>
@@ -1826,12 +1831,20 @@ Create `doppler-web/app/(marketing)/page.test.tsx`:
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Page from "./page";
+import MarketingLayout from "./layout";
 import { heroContent, faqItems } from "@/lib/content";
 
 describe("Landing page", () => {
   it("renders every section of the landing", () => {
-    render(<Page />);
-    expect(screen.getByText("Doppler")).toBeInTheDocument();
+    // Rendered inside MarketingLayout because "Doppler" (Header/Footer) only
+    // exists there, not in Page's own body components; Next.js applies
+    // layout.tsx automatically at runtime but React Testing Library does not.
+    render(
+      <MarketingLayout>
+        <Page />
+      </MarketingLayout>
+    );
+    expect(screen.getAllByText("Doppler").length).toBeGreaterThan(0);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(heroContent.headline);
     expect(screen.getByText("Empresas que confiaron en nosotros")).toBeInTheDocument();
     expect(screen.getByText("Qué hacemos")).toBeInTheDocument();
