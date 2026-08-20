@@ -15,7 +15,7 @@ export default function Page() {
       <ClientLogos />
       <Services />
       <AiSection />
-      <Metrics />
+      {/* <Metrics /> */}
       <Testimonials />
       <FAQ />
       <FinalCTA />

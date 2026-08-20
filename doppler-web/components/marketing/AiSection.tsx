@@ -23,7 +23,7 @@ export default function AiSection() {
             return (
               <div
                 key={capability.title}
-                className="rounded-lg border border-primary/40 bg-surface p-6"
+                className="rounded-lg border border-primary/40 bg-surface p-6 transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg hover:shadow-accent/20"
               >
                 <Icon className="h-6 w-6 text-accent" />
                 <h3 className="mt-3 font-semibold text-foreground">{capability.title}</h3>

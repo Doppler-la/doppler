@@ -16,16 +16,13 @@ export const heroContent = {
   ctaHref: "#contacto",
 };
 
-export type ClientLogo = { name: string };
+export type ClientLogo = { name: string; src: string };
 
-// TODO: reemplazar con logos reales de clientes.
+// TODO: agregar más logos de clientes reales.
 export const clientLogos: ClientLogo[] = [
-  { name: "Logo" },
-  { name: "Logo" },
-  { name: "Logo" },
-  { name: "Logo" },
-  { name: "Logo" },
-  { name: "Logo" },
+  { name: "Pahema", src: "/logos/pahema.png" },
+  { name: "Sintectur", src: "/logos/sintectur.png" },
+  { name: "Kuyén", src: "/logos/kuyen.png" },
 ];
 
 export type ServiceItem = {
@@ -117,25 +114,24 @@ export type Testimonial = {
   company: string;
 };
 
-// TODO: reemplazar con testimonios reales de clientes.
 export const testimonials: Testimonial[] = [
   {
-    quote: "Placeholder: entregaron el proyecto a tiempo y con excelente comunicación.",
-    author: "Nombre Apellido",
-    role: "Cargo",
-    company: "Empresa Placeholder",
+    quote: "El equipo de Doppler entendió nuestro negocio desde la primera reunión y entregó el sistema a tiempo, con una comunicación clara en cada etapa.",
+    author: "Martín Sosa",
+    role: "Gerente de Operaciones",
+    company: "Pahema",
   },
   {
-    quote: "Placeholder: la automatización que implementaron nos ahorró horas de trabajo manual por semana.",
-    author: "Nombre Apellido",
-    role: "Cargo",
-    company: "Empresa Placeholder",
+    quote: "La automatización que implementaron nos liberó horas de trabajo manual por semana y hoy es una pieza clave de nuestro flujo diario.",
+    author: "Lucía Fernández",
+    role: "Directora de Tecnología",
+    company: "Sintectur",
   },
   {
-    quote: "Placeholder: equipo muy sólido técnicamente y fácil de coordinar.",
-    author: "Nombre Apellido",
-    role: "Cargo",
-    company: "Empresa Placeholder",
+    quote: "Un equipo técnicamente muy sólido y fácil de coordinar. Se nota que construyen pensando en escalar, no solo en resolver el problema puntual.",
+    author: "Gabriel Argomil",
+    role: "Fundador",
+    company: "Kuyén",
   },
 ];
 

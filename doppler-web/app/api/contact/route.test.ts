@@ -1,5 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { POST } from "./route";
+
+const send = vi.fn().mockResolvedValue({ data: { id: "test" }, error: null });
+vi.mock("resend", () => ({
+  Resend: class {
+    emails = { send };
+  },
+}));
+
+const { POST } = await import("./route");
 
 function makeRequest(body: unknown) {
   return new Request("http://localhost/api/contact", {
@@ -11,7 +19,7 @@ function makeRequest(body: unknown) {
 
 describe("POST /api/contact", () => {
   beforeEach(() => {
-    vi.spyOn(console, "log").mockImplementation(() => {});
+    send.mockClear();
   });
 
   it("returns 200 and ok:true for a valid submission", async () => {
@@ -21,6 +29,23 @@ describe("POST /api/contact", () => {
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json).toEqual({ ok: true });
+    expect(send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: ["dsalamone@doppler.la", "i.irigoitia@doppler.la"],
+        replyTo: "ignacio@example.com",
+      })
+    );
+  });
+
+  it("returns 502 when the email fails to send", async () => {
+    send.mockResolvedValueOnce({ data: null, error: { message: "fail" } });
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const res = await POST(
+      makeRequest({ name: "Ignacio", email: "ignacio@example.com", message: "Hola" })
+    );
+    expect(res.status).toBe(502);
+    const json = await res.json();
+    expect(json.ok).toBe(false);
   });
 
   it("returns 400 when name is missing", async () => {

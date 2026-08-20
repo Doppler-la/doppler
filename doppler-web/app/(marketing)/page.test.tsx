@@ -11,7 +11,8 @@ describe("Landing page", () => {
         <Page />
       </MarketingLayout>
     );
-    expect(screen.getAllByText("Doppler").length).toBe(2);
+    expect(screen.getAllByText("Doppler").length).toBe(1);
+    expect(screen.getByAltText("Doppler")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(heroContent.headline);
     expect(screen.getByText("Empresas que confiaron en nosotros")).toBeInTheDocument();
     expect(screen.getByText("Qué hacemos")).toBeInTheDocument();

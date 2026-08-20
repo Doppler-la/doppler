@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+const CONTACT_RECIPIENTS = ["dsalamone@doppler.la", "i.irigoitia@doppler.la"];
 
 type ContactBody = {
   name?: unknown;
@@ -30,8 +34,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "El mensaje es requerido" }, { status: 400 });
   }
 
-  // TODO: conectar con un servicio de email (ej. Resend) o guardar en base de datos.
-  console.log("Nuevo contacto recibido:", { name, email, message });
+  try {
+    const { error: sendError } = await resend.emails.send({
+      from: "Doppler <onboarding@resend.dev>",
+      to: CONTACT_RECIPIENTS,
+      replyTo: email,
+      subject: `Nuevo contacto de ${name}`,
+      text: `Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`,
+    });
+    if (sendError) throw sendError;
+  } catch (error) {
+    console.error("Error enviando email de contacto:", error);
+    return NextResponse.json({ ok: false, error: "No se pudo enviar el mensaje" }, { status: 502 });
+  }
 
   return NextResponse.json({ ok: true }, { status: 200 });
 }

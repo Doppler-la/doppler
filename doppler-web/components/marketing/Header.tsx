@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { navLinks } from "@/lib/content";
 
@@ -5,7 +6,9 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-primary/40 bg-background/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <span className="text-xl font-bold text-foreground">Doppler</span>
+        <Link href="#" className="flex items-center">
+          <Image src="/doppler-mark.png" alt="Doppler" width={48} height={48} priority />
+        </Link>
         <nav className="hidden gap-8 md:flex">
           {navLinks.map((link) => (
             <Link

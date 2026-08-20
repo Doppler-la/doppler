@@ -20,7 +20,7 @@ export default function Services() {
             return (
               <div
                 key={service.title}
-                className="rounded-lg border border-primary/40 bg-background p-8"
+                className="rounded-lg border border-primary/40 bg-background p-8 transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg hover:shadow-accent/20"
               >
                 <Icon className="h-8 w-8 text-accent" />
                 <h3 className="mt-4 text-xl font-semibold text-foreground">{service.title}</h3>

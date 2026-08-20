@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { clientLogos } from "@/lib/content";
 
 export default function ClientLogos() {
@@ -7,13 +8,19 @@ export default function ClientLogos() {
         <h2 className="text-2xl font-bold text-foreground md:text-3xl">
           Empresas que confiaron en nosotros
         </h2>
-        <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-6">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
           {clientLogos.map((logo, index) => (
             <div
               key={index}
-              className="flex h-16 items-center justify-center rounded-md border border-primary/40 bg-surface text-sm text-muted opacity-60"
+              className="flex h-24 w-40 items-center justify-center overflow-hidden rounded-lg"
             >
-              {logo.name}
+              <Image
+                src={logo.src}
+                alt={logo.name}
+                width={160}
+                height={64}
+                className="h-full w-full object-contain"
+              />
             </div>
           ))}
         </div>

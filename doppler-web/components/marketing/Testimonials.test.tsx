@@ -11,9 +11,7 @@ describe("Testimonials", () => {
       // characters (""…""), so the quote text is a substring of the
       // paragraph's text content, not an exact match.
       expect(screen.getByText(t.quote, { exact: false })).toBeInTheDocument();
+      expect(screen.getByText(t.author)).toBeInTheDocument();
     });
-    // content.ts's placeholder testimonials all share the same author name
-    // ("Nombre Apellido"), so assert the count instead of a per-item lookup.
-    expect(screen.getAllByText(testimonials[0].author).length).toBe(testimonials.length);
   });
 });

@@ -21,8 +21,12 @@ describe("content", () => {
     expect(heroContent.ctaLabel).toBe("Hablemos hoy");
   });
 
-  it("has at least 6 placeholder client logos", () => {
-    expect(clientLogos.length).toBeGreaterThanOrEqual(6);
+  it("has at least 1 client logo, each with a name and image source", () => {
+    expect(clientLogos.length).toBeGreaterThanOrEqual(1);
+    clientLogos.forEach((logo) => {
+      expect(logo.name).toBeTruthy();
+      expect(logo.src).toBeTruthy();
+    });
   });
 
   it("has exactly 3 services", () => {
