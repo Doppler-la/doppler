@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
   try {
     const { error: sendError } = await resend.emails.send({
-      from: "Doppler <onboarding@resend.dev>",
+      from: "Doppler <no-reply@doppler.la>",
       to: CONTACT_RECIPIENTS,
       replyTo: email,
       subject: `Nuevo contacto de ${name}`,

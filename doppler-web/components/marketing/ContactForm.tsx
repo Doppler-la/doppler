@@ -21,6 +21,9 @@ export default function ContactForm() {
       });
       if (!res.ok) throw new Error("request failed");
       setStatus("success");
+      setName("");
+      setEmail("");
+      setMessage("");
     } catch {
       setStatus("error");
     }
