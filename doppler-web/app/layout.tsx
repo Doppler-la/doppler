@@ -14,10 +14,28 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const title = "Doppler — Software Factory para Startups, Pymes y Empresas";
+const description =
+  "Desarrollo de software e IA para automatizaciones que generan resultados. Trabajamos con startups, pymes y empresas.";
+
 export const metadata: Metadata = {
-  title: "Doppler — Software Factory para Startups, Pymes y Empresas",
-  description:
-    "Desarrollo de software e IA para automatizaciones que generan resultados. Trabajamos con startups, pymes y empresas.",
+  metadataBase: new URL("https://www.doppler.la"),
+  title,
+  description,
+  openGraph: {
+    type: "website",
+    locale: "es_AR",
+    siteName: "Doppler",
+    title,
+    description,
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Doppler" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -7,6 +7,72 @@ html {
 }
 
 body {
-  background-color: #0A0A0A;
+  background-color: #0A0A0F;
   color: #F5F5F4;
+}
+
+@layer utilities {
+  .text-gradient {
+    background-image: linear-gradient(135deg, #6366F1, #A855F7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .bg-brand-gradient {
+    background-image: linear-gradient(135deg, #6366F1, #A855F7);
+  }
+}
+
+/* Motion helpers del rebrand (hero radar, reveals, nav) */
+@keyframes dp-ripple {
+  0%   { transform: translate(-50%, -50%) scale(.08); opacity: .85; }
+  65%  { opacity: .28; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+
+@keyframes dp-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(5%, -4%) scale(1.14); }
+}
+
+@keyframes dp-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+
+@keyframes dp-marquee { to { transform: translateX(-50%); } }
+
+@keyframes dp-rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.dp-ripple { animation: dp-ripple 7s linear infinite; }
+.dp-drift  { animation: dp-drift 20s ease-in-out infinite; }
+.dp-float  { animation: dp-float 7s ease-in-out infinite; }
+
+/* Reveal al scrollear, sin JS (scroll-driven animations) */
+.dp-rev {
+  animation: dp-rise .9s cubic-bezier(.2, .7, .2, 1) both;
+  animation-timeline: view();
+  animation-range: entry 4% cover 26%;
+}
+
+/* Subrayado que crece en los links de nav */
+.dp-nav a { position: relative; }
+.dp-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -6px;
+  height: 1px;
+  background: linear-gradient(90deg, #6366F1, #A855F7);
+  transition: right .35s cubic-bezier(.2, .7, .2, 1);
+}
+.dp-nav a:hover::after { right: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dp-ripple, .dp-drift, .dp-float, .dp-rev { animation: none; }
+  .dp-rev { opacity: 1; transform: none; }
 }

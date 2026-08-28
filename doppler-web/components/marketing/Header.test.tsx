@@ -5,7 +5,7 @@ import Header from "./Header";
 describe("Header", () => {
   it("renders the Doppler logo and all nav links", () => {
     render(<Header />);
-    expect(screen.getByAltText("Doppler")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Doppler" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Servicios" })).toHaveAttribute("href", "#servicios");
     expect(screen.getByRole("link", { name: "IA para Empresas" })).toHaveAttribute("href", "#ia");
     expect(screen.getByRole("link", { name: "Clientes" })).toHaveAttribute("href", "#clientes");

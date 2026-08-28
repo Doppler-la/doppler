@@ -20,6 +20,7 @@ export type ClientLogo = { name: string; src: string };
 
 // TODO: agregar más logos de clientes reales.
 export const clientLogos: ClientLogo[] = [
+  { name: "EstrategiaCM", src: "/logos/estrategiacm.png" },
   { name: "Pahema", src: "/logos/pahema.png" },
   { name: "Sintectur", src: "/logos/sintectur.png" },
   { name: "Kuyén", src: "/logos/kuyen.png" },

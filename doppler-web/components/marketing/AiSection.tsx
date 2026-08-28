@@ -36,7 +36,7 @@ export default function AiSection() {
         <div className="mt-16 grid gap-8 md:grid-cols-4">
           {aiSection.methodology.map((step) => (
             <div key={step.step} className="text-center">
-              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-accent font-bold text-background">
+              <div className="bg-brand-gradient mx-auto flex h-10 w-10 items-center justify-center rounded-full font-bold text-foreground">
                 {step.step}
               </div>
               <h4 className="mt-3 font-semibold text-foreground">{step.title}</h4>

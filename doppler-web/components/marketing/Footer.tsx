@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { footerLinks } from "@/lib/content";
+import DopplerMark from "./DopplerMark";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -7,7 +8,10 @@ export default function Footer() {
   return (
     <footer className="border-t border-primary/40 px-6 py-10">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 md:flex-row md:justify-between">
-        <span className="text-lg font-bold text-foreground">Doppler</span>
+        <span className="flex items-center gap-2 text-lg font-bold text-foreground">
+          <DopplerMark size={26} />
+          Doppler
+        </span>
         <nav className="flex gap-6">
           {footerLinks.map((link) => (
             <Link

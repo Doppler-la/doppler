@@ -9,7 +9,7 @@ export default function FinalCTA() {
         </h2>
         <Link
           href="#contacto"
-          className="mt-8 inline-block rounded-md bg-accent px-8 py-3 text-base font-semibold text-foreground transition-colors hover:bg-accent/80"
+          className="bg-brand-gradient mt-8 inline-block rounded-lg px-8 py-3 text-base font-semibold text-foreground shadow-lg shadow-accent/40 transition-opacity hover:opacity-90"
         >
           Empecemos
         </Link>

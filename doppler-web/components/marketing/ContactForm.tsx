@@ -77,7 +77,7 @@ export default function ContactForm() {
           <button
             type="submit"
             disabled={status === "loading"}
-            className="rounded-md bg-accent px-6 py-3 font-semibold text-foreground transition-colors hover:bg-accent/80 disabled:opacity-50"
+            className="bg-brand-gradient rounded-md px-6 py-3 font-semibold text-foreground shadow-md shadow-accent/30 transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {status === "loading" ? "Enviando..." : "Enviar"}
           </button>
