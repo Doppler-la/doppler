@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const CONTACT_RECIPIENTS = ["dsalamone@doppler.la", "i.irigoitia@doppler.la"];
+const CONTACT_RECIPIENTS = ["dsalamone@doppler.la", "iirigoitia@doppler.la"];
 
 type ContactBody = {
   name?: unknown;
