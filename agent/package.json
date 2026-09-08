@@ -1,0 +1,13 @@
+{
+  "name": "doppler-x-agent",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test",
+    "publish-thread": "node publish.mjs"
+  },
+  "dependencies": {
+    "twitter-api-v2": "^1.29.1"
+  }
+}

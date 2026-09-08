@@ -1,0 +1,17 @@
+{
+  "rss": [
+    "https://hnrss.org/frontpage",
+    "https://simonwillison.net/atom/everything/",
+    "https://www.latent.space/feed"
+  ],
+  "github_releases": [
+    "anthropics/claude-code",
+    "openai/openai-python"
+  ],
+  "hn_keywords": ["AI agent", "automation", "developer tools", "LLM", "no-code"],
+  "open_search_topics": [
+    "novedades IA para empresas esta semana",
+    "nuevas herramientas de automatización de procesos",
+    "casos de automatización con IA en pymes"
+  ]
+}
