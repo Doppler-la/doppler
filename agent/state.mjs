@@ -1,18 +1,17 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
 
 const SEVEN_DAYS = 7 * 864e5;
 
-export function loadState(dir = "agent/state") {
+export function loadState(dir = new URL("state/", import.meta.url)) {
   return {
-    drafts: JSON.parse(readFileSync(join(dir, "drafts.json"), "utf8")),
-    history: JSON.parse(readFileSync(join(dir, "history.json"), "utf8")),
+    drafts: JSON.parse(readFileSync(new URL("drafts.json", dir), "utf8")),
+    history: JSON.parse(readFileSync(new URL("history.json", dir), "utf8")),
   };
 }
 
-export function saveState(state, dir = "agent/state") {
-  writeFileSync(join(dir, "drafts.json"), JSON.stringify(state.drafts, null, 2) + "\n");
-  writeFileSync(join(dir, "history.json"), JSON.stringify(state.history, null, 2) + "\n");
+export function saveState(state, dir = new URL("state/", import.meta.url)) {
+  writeFileSync(new URL("drafts.json", dir), JSON.stringify(state.drafts, null, 2) + "\n");
+  writeFileSync(new URL("history.json", dir), JSON.stringify(state.history, null, 2) + "\n");
 }
 
 export function applyTelegramUpdates(state, updates) {
@@ -68,6 +67,10 @@ export function recordRejected(state, draftId) {
 export function prunePending(state, now = new Date()) {
   const pruned = [];
   for (const d of [...state.drafts.drafts]) {
+    if (d.status === "rejected") {
+      recordRejected(state, d.id); // barre huérfanos que nunca pasaron a history
+      continue;
+    }
     if (d.status === "pending" && now - new Date(d.created_at) > SEVEN_DAYS) {
       recordRejected(state, d.id);
       pruned.push(d.id);

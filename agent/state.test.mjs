@@ -1,6 +1,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import {
+  loadState,
+  saveState,
   applyTelegramUpdates,
   publishableDrafts,
   recordPublished,
@@ -64,4 +70,22 @@ test("prunePending mueve a rejected los pending de más de 7 días", () => {
   assert.deepEqual(pruned, ["d1"]);
   assert.equal(s.history.rejected.length, 1);
   assert.equal(s.drafts.drafts.length, 0);
+});
+
+test("prunePending barre a history los drafts rejected huérfanos", () => {
+  const s = fresh();
+  s.drafts.drafts[0].status = "rejected";
+  const pruned = prunePending(s);
+  assert.deepEqual(pruned, []);
+  assert.equal(s.drafts.drafts.length, 0);
+  assert.equal(s.history.rejected.length, 1);
+});
+
+test("saveState y loadState hacen round-trip", () => {
+  const dir = pathToFileURL(mkdtempSync(join(tmpdir(), "agent-state-")) + "/");
+  writeFileSync(new URL("drafts.json", dir), "{}");
+  writeFileSync(new URL("history.json", dir), "{}");
+  const s = fresh();
+  saveState(s, dir);
+  assert.deepEqual(loadState(dir), s);
 });
