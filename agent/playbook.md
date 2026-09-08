@@ -1,13 +1,23 @@
 # Playbook — corrida del agente de contenido para X
 
-Se ejecuta 3x/semana (lun/mié/vie 9:00 ART). Seguí los pasos en orden.
-Trabajás desde la raíz del repo. `agent/node_modules` ya está instalado.
+Se ejecuta **todos los días a las 9:00 ART**. Seguí los pasos en orden,
+trabajando desde la raíz del repo.
 
-## 1. Traer estado
+Los pasos 1–4 (traer estado, drenar Telegram, publicar aprobados, avisar
+rechazados/podados) corren **siempre**: `getUpdates` de Telegram solo retiene
+las respuestas ~24 h, así que hay que drenarlas a diario o se pierden.
+
+El paso 5 en adelante (investigar + redactar + mandar borradores nuevos) corre
+**solo los lunes, miércoles y viernes** — ver el chequeo al final del paso 4.
+
+## 1. Traer estado e instalar deps
 
 ```bash
-git pull --rebase
+git pull --rebase && (cd agent && npm ci)
 ```
+
+(`agent/node_modules/` está en `.gitignore`; una corrida en la nube arranca de
+un clon limpio, por eso el `npm ci`.)
 
 ## 2. Leer respuestas de Telegram
 
@@ -22,14 +32,19 @@ respondé el callback para que Telegram deje de mostrar el "reloj":
 curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/answerCallbackQuery" -d "callback_query_id=<ID>"
 ```
 
-Aplicá los cambios de estado con un script inline:
+Si `answerCallbackQuery` devuelve `query is too old`, ignoralo — no es un paso
+fallido, solo significa que el botón se tocó hace rato.
+
+Aplicá los cambios de estado con un script inline (esto ya manda los rechazados
+a `history`; el paso 4 es solo el aviso por Telegram):
 
 ```bash
 node --input-type=module -e '
-import { loadState, saveState, applyTelegramUpdates, prunePending } from "./agent/state.mjs";
+import { loadState, saveState, applyTelegramUpdates, prunePending, recordRejected } from "./agent/state.mjs";
 const updates = JSON.parse(process.env.TG_UPDATES).result;
 const s = loadState();
 const { approved, rejected } = applyTelegramUpdates(s, updates);
+rejected.forEach((id) => recordRejected(s, id));
 const pruned = prunePending(s);
 saveState(s);
 console.log(JSON.stringify({ approved, rejected, pruned }));
@@ -49,16 +64,29 @@ node agent/publish.mjs <id>
 
 - Exit 0 con un id numérico → publicado. Mandá a Telegram:
   `✅ publicado: https://x.com/<cuenta>/status/<id>`
-- Exit 1 o error de red → NO cambies el estado (el draft sigue `approved`).
-  Mandá a Telegram: `⚠️ no pude publicar <id>, reintento la próxima corrida`.
-  Seguí con los demás.
+- Exit 1 con `⚠️ parcial: ...` → se publicaron algunos tweets del hilo y el
+  estado ya quedó como publicado (no se reintenta). Reenviá ese mensaje a
+  Telegram para completar los tweets que falten a mano.
+- Exit 1 sin id / error de red antes del primer tweet → NO cambies el estado
+  (el draft sigue `approved`). Mandá a Telegram:
+  `⚠️ no pude publicar <id>, reintento la próxima corrida`. Seguí con los demás.
 
-## 4. Avisar rechazados y podados
+Cuando terminaste de publicar, commiteá el estado ya mismo para no dejar el
+árbol sucio (un crash más adelante bloquearía el próximo `git pull --rebase`):
 
-- Por cada id en `rejected`: llamá `recordRejected(s, id)` + `saveState` (o hacelo
-  en el mismo script inline del paso 2 antes de guardar).
-- Por cada id en `pruned`: mandá a Telegram
-  `🗑️ descarté el borrador <id> (7 días sin respuesta)`.
+```bash
+git add agent/state/ && git commit -m "chore(agent): publicados $(date +%F)" && git push
+```
+
+## 4. Avisar podados
+
+Por cada id en `pruned`: mandá a Telegram
+`🗑️ descarté el borrador <id> (7 días sin respuesta)`.
+
+(Los rechazados ya pasaron a `history` en el script del paso 2.)
+
+**Chequeo M/M/V:** si hoy NO es lunes, miércoles o viernes, terminá acá — no
+hay que redactar borradores nuevos. (El estado ya se commiteó en el paso 3.)
 
 ## 5. Investigar fuentes
 

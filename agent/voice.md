@@ -11,7 +11,7 @@ automatización con IA, consultoría técnica.
 - Nada de lenguaje de marketing vacío ("solución integral", "potenciamos tu negocio").
 - Se cuenta una historia concreta: qué problema real había, qué se hizo, qué cambió.
 - Cada tweet del hilo se entiende solo pero engancha con el siguiente.
-- Máx. 280 caracteres por tweet. Hilos de 3 a 6 tweets.
+- Máx. 280 caracteres por tweet. Hilos de 2 a 6 tweets.
 
 ## Tipos de contenido
 
