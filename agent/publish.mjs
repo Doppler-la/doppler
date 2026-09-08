@@ -10,10 +10,12 @@ export function validateThread(thread) {
   if (!Array.isArray(thread) || thread.length < 2 || thread.length > 6) {
     errors.push("el hilo debe tener entre 2 y 6 tweets");
   }
-  (thread ?? []).forEach((t, i) => {
-    if (!t || !t.trim()) errors.push(`tweet ${i + 1} vacío`);
-    else if (t.length > 280) errors.push(`tweet ${i + 1} supera 280 caracteres (${t.length})`);
-  });
+  if (Array.isArray(thread)) {
+    thread.forEach((t, i) => {
+      if (!t || !t.trim()) errors.push(`tweet ${i + 1} vacío`);
+      else if (t.length > 280) errors.push(`tweet ${i + 1} supera 280 caracteres (${t.length})`);
+    });
+  }
   return errors;
 }
 
@@ -26,15 +28,25 @@ function client() {
   });
 }
 
-async function postThread(thread) {
-  const rw = client().readWrite;
+export async function postThread(
+  thread,
+  post = (text, opts) => client().readWrite.v2.tweet(text, opts),
+) {
   let replyTo = null;
   let firstId = null;
-  for (const text of thread) {
-    const opts = replyTo ? { reply: { in_reply_to_tweet_id: replyTo } } : {};
-    const { data } = await rw.v2.tweet(text, opts);
-    replyTo = data.id;
-    firstId ??= data.id;
+  let posted = 0;
+  try {
+    for (const text of thread) {
+      const opts = replyTo ? { reply: { in_reply_to_tweet_id: replyTo } } : {};
+      const { data } = await post(text, opts);
+      replyTo = data.id;
+      firstId ??= data.id;
+      posted += 1;
+    }
+  } catch (e) {
+    e.firstId = firstId; // puede ser null si falló el primer tweet
+    e.posted = posted;
+    throw e;
   }
   return firstId;
 }
@@ -54,9 +66,24 @@ async function main() {
 
   if (dryRun) { console.log(formatThread(draft.thread)); return; }
 
+  if (draft.status !== "approved") { console.error(`⚠️ ${draftId} no está aprobado`); process.exit(1); }
+
   if (isAlreadyPublished(state, draftId)) { console.log("already published"); return; }
 
-  const firstId = await postThread(draft.thread);
+  let firstId;
+  try {
+    firstId = await postThread(draft.thread);
+  } catch (e) {
+    if (e.firstId) {
+      recordPublished(state, draftId, e.firstId);
+      saveState(state);
+      console.error(
+        `⚠️ parcial: se publicaron ${e.posted}/${draft.thread.length} tweets del hilo ${e.firstId}, completá los que faltan a mano`,
+      );
+      process.exit(1);
+    }
+    throw e;
+  }
   recordPublished(state, draftId, firstId);
   saveState(state);
   console.log(firstId);
