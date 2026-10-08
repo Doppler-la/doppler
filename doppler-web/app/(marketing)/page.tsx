@@ -5,7 +5,7 @@ import AiSection from "@/components/marketing/AiSection";
 import Testimonials from "@/components/marketing/Testimonials";
 import FAQ from "@/components/marketing/FAQ";
 import FinalCTA from "@/components/marketing/FinalCTA";
-import ContactForm from "@/components/marketing/ContactForm";
+import LeadChat from "@/components/marketing/LeadChat";
 
 export default function Page() {
   return (
@@ -18,7 +18,7 @@ export default function Page() {
       <Testimonials />
       <FAQ />
       <FinalCTA />
-      <ContactForm />
+      <LeadChat />
     </main>
   );
 }

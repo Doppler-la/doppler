@@ -174,7 +174,7 @@ export const chatContent = {
     "¡Hola! Soy el asistente de Doppler. Contame qué problema o proceso querés resolver en tu negocio. Cuanto más detalle me des, más útil va a ser la reunión con nuestro equipo técnico, así que te voy a hacer algunas preguntas para entenderlo bien. Si alguna no querés responderla ahora, podés omitirla: te la va a hacer una persona del equipo en la reunión.",
   inputLabel: "Tu mensaje",
   placeholder: "Escribí acá...",
-  sendLabel: "Enviar",
+  sendLabel: "Enviar mensaje",
   fallbackSummary: "¿Preferís escribirnos directo?",
   errorMessage:
     "Algo falló y no pudimos continuar la conversación. Probá de nuevo o escribinos con el formulario de abajo.",
