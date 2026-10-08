@@ -18,6 +18,7 @@ const brief: Brief = {
   openQuestions: ["¿Cuántos pedidos por día?"],
   referralSource: "Instagram",
   suggestedKpis: ["Pedidos perdidos por semana", "Tiempo de carga por pedido", "Pedidos a tiempo"],
+  businessKpis: ["Ventas recuperadas", "Margen por pedido", "Recompra de clientes"],
 };
 
 const transcript = [
@@ -56,6 +57,16 @@ describe("buildBriefEmail", () => {
     expect(text).toContain("1. Pedidos perdidos por semana");
     expect(text).toContain("2. Tiempo de carga por pedido");
     expect(text).toContain("3. Pedidos a tiempo");
+  });
+
+  it("lists the operational and the business KPIs in separate groups", () => {
+    const { text } = buildBriefEmail(brief, transcript);
+    const operational = text.indexOf("Operativos:");
+    const business = text.indexOf("De negocio:");
+    expect(operational).toBeGreaterThan(-1);
+    expect(business).toBeGreaterThan(operational);
+    expect(text.slice(business)).toContain("1. Ventas recuperadas");
+    expect(text.slice(business)).toContain("3. Recompra de clientes");
   });
 
   it("does not include solution hypotheses", () => {

@@ -16,6 +16,7 @@ export type Brief = {
   openQuestions: string[];
   referralSource: string;
   suggestedKpis: string[];
+  businessKpis: string[];
 };
 
 export type BriefResult = { ok: true; brief: Brief } | { ok: false; error: string };
@@ -64,7 +65,13 @@ export const BRIEF_TOOL: Anthropic.Tool = {
         type: "array",
         items: { type: "string" },
         description:
-          "Exactamente 3 KPIs principales para empezar a medir en el negocio que describió el cliente. Cada uno: nombre del KPI y, tras un guion, qué mide y por qué le sirve a su caso. Uso interno: no se los cuentes al cliente.",
+          "Exactamente 3 KPIs operativos: miden el problema o el proceso que describió el cliente (errores, tiempos, volumen). Cada uno: nombre del KPI y, tras un guion, qué mide y por qué le sirve a su caso. Uso interno: no se los cuentes al cliente.",
+      },
+      business_kpis: {
+        type: "array",
+        items: { type: "string" },
+        description:
+          "Exactamente 3 KPIs de negocio: miden el impacto en los resultados del negocio (ingresos, margen, costos, retención, satisfacción de clientes). Mismo formato que los operativos. Uso interno: no se los cuentes al cliente.",
       },
       open_questions: {
         type: "array",
@@ -79,12 +86,17 @@ export const BRIEF_TOOL: Anthropic.Tool = {
       "problem_summary",
       "referral_source",
       "suggested_kpis",
+      "business_kpis",
     ],
   },
 };
 
 function text(value: unknown, max = FIELD_MAX): string {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
+}
+
+function parseKpis(value: unknown): string[] {
+  return Array.isArray(value) ? value.map((k) => text(k, 300)).filter(Boolean) : [];
 }
 
 function detail(value: unknown): string {
@@ -121,13 +133,18 @@ export function parseBrief(input: unknown): BriefResult {
     };
   }
 
-  const kpis = Array.isArray(raw.suggested_kpis)
-    ? raw.suggested_kpis.map((k) => text(k, 300)).filter(Boolean)
-    : [];
-  if (kpis.length < KPI_COUNT) {
+  const operationalKpis = parseKpis(raw.suggested_kpis);
+  if (operationalKpis.length < KPI_COUNT) {
     return {
       ok: false,
-      error: `Faltan KPIs: sugerí ${KPI_COUNT} KPIs principales según el negocio que describió el cliente.`,
+      error: `Faltan KPIs operativos: sugerí ${KPI_COUNT} KPIs que midan el problema o proceso que describió el cliente.`,
+    };
+  }
+  const businessKpis = parseKpis(raw.business_kpis);
+  if (businessKpis.length < KPI_COUNT) {
+    return {
+      ok: false,
+      error: `Faltan KPIs de negocio: sugerí ${KPI_COUNT} KPIs que midan el impacto en los resultados del negocio (ingresos, margen, costos, retención).`,
     };
   }
 
@@ -155,7 +172,8 @@ export function parseBrief(input: unknown): BriefResult {
       constraints: detail(raw.constraints),
       openQuestions,
       referralSource,
-      suggestedKpis: kpis.slice(0, KPI_COUNT),
+      suggestedKpis: operationalKpis.slice(0, KPI_COUNT),
+      businessKpis: businessKpis.slice(0, KPI_COUNT),
     },
   };
 }

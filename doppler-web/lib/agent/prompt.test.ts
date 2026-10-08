@@ -24,7 +24,8 @@ describe("buildSystemPrompt", () => {
 
   it("asks for 3 KPIs in the brief and keeps them internal", () => {
     const prompt = buildSystemPrompt({ wrapUp: false });
-    expect(prompt).toContain("3 KPIs");
+    expect(prompt).toContain("3 KPIs operativos");
+    expect(prompt).toContain("3 KPIs de negocio");
     expect(prompt).toContain("no se los cuentes");
   });
 

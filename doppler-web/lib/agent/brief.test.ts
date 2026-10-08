@@ -12,6 +12,11 @@ const valid = {
     "Tiempo de carga de un pedido",
     "Pedidos entregados a tiempo",
   ],
+  business_kpis: [
+    "Ventas recuperadas por pedidos que ya no se pierden",
+    "Margen por pedido",
+    "Recompra de clientes",
+  ],
 };
 
 describe("BRIEF_TOOL", () => {
@@ -32,6 +37,7 @@ describe("parseBrief", () => {
     expect(result.brief.openQuestions).toEqual([]);
     expect(result.brief.referralSource).toBe("Instagram");
     expect(result.brief.suggestedKpis).toHaveLength(3);
+    expect(result.brief.businessKpis).toHaveLength(3);
   });
 
   it("rejects a missing referral source but accepts an omitted one as an answer", () => {
@@ -44,6 +50,19 @@ describe("parseBrief", () => {
     expect(parseBrief({ ...valid, suggested_kpis: undefined }).ok).toBe(false);
     expect(parseBrief({ ...valid, suggested_kpis: ["uno", "dos"] }).ok).toBe(false);
     expect(parseBrief({ ...valid, suggested_kpis: ["uno", 5, null, ""] }).ok).toBe(false);
+  });
+
+  it("requires 3 business KPIs", () => {
+    expect(parseBrief({ ...valid, business_kpis: undefined }).ok).toBe(false);
+    expect(parseBrief({ ...valid, business_kpis: ["uno", "dos"] }).ok).toBe(false);
+    expect(parseBrief({ ...valid, business_kpis: ["uno", 5, null, ""] }).ok).toBe(false);
+  });
+
+  it("keeps only the first 3 business KPIs, truncated to 300 characters", () => {
+    const result = parseBrief({ ...valid, business_kpis: ["a".repeat(400), "b", "c", "d"] });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.brief.businessKpis).toEqual(["a".repeat(300), "b", "c"]);
   });
 
   it("keeps only the first 3 KPIs, truncated to 300 characters", () => {

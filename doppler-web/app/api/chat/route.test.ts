@@ -22,6 +22,7 @@ const validBrief = {
   problem_summary: "Cargan pedidos a mano.",
   referral_source: "Instagram",
   suggested_kpis: ["Pedidos perdidos por semana", "Tiempo de carga", "Pedidos a tiempo"],
+  business_kpis: ["Ventas recuperadas", "Margen por pedido", "Recompra de clientes"],
 };
 
 function textReply(text: string) {
@@ -168,10 +169,11 @@ describe("POST /api/chat", () => {
     streamTurn
       .mockResolvedValueOnce(toolReply({ ...validBrief, suggested_kpis: ["uno"] }))
       .mockResolvedValueOnce(toolReply({ ...validBrief, referral_source: undefined }))
+      .mockResolvedValueOnce(toolReply({ ...validBrief, business_kpis: undefined }))
       .mockResolvedValueOnce(textReply("Seguimos."));
     await (await POST(makeRequest({ messages: history(4) }))).text();
     expect(send).not.toHaveBeenCalled();
-    const results = streamTurn.mock.calls[2][0].messages.at(-1).content;
+    const results = streamTurn.mock.calls[3][0].messages.at(-1).content;
     expect(results[0].is_error).toBe(true);
   });
 
