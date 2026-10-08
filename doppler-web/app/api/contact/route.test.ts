@@ -31,7 +31,7 @@ describe("POST /api/contact", () => {
     expect(json).toEqual({ ok: true });
     expect(send).toHaveBeenCalledWith(
       expect.objectContaining({
-        to: ["dsalamone@doppler.la", "i.irigoitia@doppler.la"],
+        to: ["dsalamone@doppler.la", "iirigoitia@doppler.la"],
         replyTo: "ignacio@example.com",
       })
     );
