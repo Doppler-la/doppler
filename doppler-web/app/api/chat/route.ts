@@ -73,7 +73,13 @@ async function handleSubmitBrief(input: unknown, history: ChatMessage[]): Promis
       };
 }
 
-async function runAgent(history: ChatMessage[], onText: (text: string) => void): Promise<boolean> {
+type AgentState = { submitted: boolean };
+
+async function runAgent(
+  history: ChatMessage[],
+  onText: (text: string) => void,
+  state: AgentState
+): Promise<void> {
   const system = buildSystemPrompt({
     wrapUp: countUserMessages(history) >= WRAP_UP_USER_MESSAGES,
   });
@@ -81,37 +87,60 @@ async function runAgent(history: ChatMessage[], onText: (text: string) => void):
     role: m.role,
     content: m.content,
   }));
-  let submitted = false;
+  let emitted = false;
 
   for (let turn = 0; turn < MAX_TURNS; turn++) {
-    const reply = await streamTurn({ system, messages, onText });
+    // El texto de turnos consecutivos se separa para que no quede pegado en la misma burbuja.
+    let pendingSeparator = emitted;
+    const reply = await streamTurn({
+      system,
+      messages,
+      onText: (text) => {
+        if (pendingSeparator) {
+          onText("\n\n");
+          pendingSeparator = false;
+        }
+        onText(text);
+      },
+    });
     if (reply.stop_reason === "refusal") throw new Error("refusal");
+    if (reply.content.some((block) => block.type === "text" && block.text.trim())) {
+      emitted = true;
+    }
 
-    const call = reply.content.find(
-      (block): block is Anthropic.ToolUseBlock =>
-        block.type === "tool_use" && block.name === BRIEF_TOOL.name
+    const calls = reply.content.filter(
+      (block): block is Anthropic.ToolUseBlock => block.type === "tool_use"
     );
-    if (!call) return submitted;
+    if (calls.length === 0) {
+      // Una respuesta sin texto dejaría una burbuja vacía que el servidor rechaza en el próximo mensaje.
+      if (!emitted && !state.submitted) throw new Error("empty_reply");
+      return;
+    }
 
     messages.push({ role: "assistant", content: reply.content });
-    const outcome: SubmitOutcome = submitted
-      ? { sent: false, message: "El brief ya fue enviado. No hagas más preguntas." }
-      : await handleSubmitBrief(call.input, history);
-    const alreadySent = submitted;
-    if (outcome.sent) submitted = true;
-    messages.push({
-      role: "user",
-      content: [
-        {
-          type: "tool_result",
-          tool_use_id: call.id,
-          content: outcome.message,
-          is_error: !outcome.sent && !alreadySent,
-        },
-      ],
-    });
+    // La API exige un tool_result por cada tool_use, también si el modelo llama en paralelo.
+    const results: Anthropic.ToolResultBlockParam[] = [];
+    for (const call of calls) {
+      let content: string;
+      let isError = false;
+      if (call.name !== BRIEF_TOOL.name) {
+        content = "Herramienta desconocida: solo podés usar submit_brief.";
+        isError = true;
+      } else if (state.submitted) {
+        content = "El brief ya fue enviado. No hagas más preguntas.";
+      } else {
+        const outcome = await handleSubmitBrief(call.input, history);
+        if (outcome.sent) state.submitted = true;
+        content = outcome.message;
+        isError = !outcome.sent;
+      }
+      results.push({ type: "tool_result", tool_use_id: call.id, content, is_error: isError });
+    }
+    messages.push({ role: "user", content: results });
   }
-  throw new Error("too_many_turns");
+
+  // Si el brief ya salió, el visitante no debe ver un error que lo lleve a reenviarlo.
+  if (!state.submitted) throw new Error("too_many_turns");
 }
 
 export async function POST(request: Request) {
@@ -138,12 +167,18 @@ export async function POST(request: Request) {
     async start(controller) {
       const send = (event: StreamEvent) =>
         controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
+      const state: AgentState = { submitted: false };
       try {
-        const submitted = await runAgent(history, (text) => send({ type: "text", text }));
-        send({ type: "done", submitted });
+        await runAgent(history, (text) => send({ type: "text", text }), state);
+        send({ type: "done", submitted: state.submitted });
       } catch (error) {
         console.error("Error en el chat:", error);
-        send({ type: "error", message: "agent_unavailable" });
+        // Con el brief ya enviado un error no debe hacer que el visitante reintente (duplicaría el email).
+        send(
+          state.submitted
+            ? { type: "done", submitted: true }
+            : { type: "error", message: "agent_unavailable" }
+        );
       } finally {
         controller.close();
       }

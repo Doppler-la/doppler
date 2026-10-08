@@ -194,4 +194,83 @@ describe("POST /api/chat", () => {
     const res = await POST(makeRequest({ messages: history(1) }));
     expect(await readEvents(res)).toEqual([{ type: "error", message: "agent_unavailable" }]);
   });
+
+  it("answers every tool_use of a parallel call and sends only one email", async () => {
+    streamTurn
+      .mockResolvedValueOnce({
+        stop_reason: "tool_use",
+        content: [
+          { type: "tool_use", id: "tu_1", name: "submit_brief", input: validBrief },
+          { type: "tool_use", id: "tu_2", name: "submit_brief", input: validBrief },
+        ],
+      })
+      .mockResolvedValueOnce(textReply("Listo."));
+    const res = await POST(makeRequest({ messages: history(4) }));
+    const events = await readEvents(res);
+
+    expect(send).toHaveBeenCalledTimes(1);
+    const results = streamTurn.mock.calls[1][0].messages.at(-1).content;
+    expect(results.map((r: { tool_use_id: string }) => r.tool_use_id)).toEqual(["tu_1", "tu_2"]);
+    expect(events.at(-1)).toEqual({ type: "done", submitted: true });
+  });
+
+  it("rejects unknown tools without sending an email", async () => {
+    streamTurn
+      .mockResolvedValueOnce({
+        stop_reason: "tool_use",
+        content: [{ type: "tool_use", id: "tu_x", name: "delete_everything", input: {} }],
+      })
+      .mockResolvedValueOnce(textReply("Perdón, sigo con tus datos."));
+    await (await POST(makeRequest({ messages: history(4) }))).text();
+    expect(send).not.toHaveBeenCalled();
+    const result = streamTurn.mock.calls[1][0].messages.at(-1).content[0];
+    expect(result).toMatchObject({ tool_use_id: "tu_x", is_error: true });
+  });
+
+  it("reports submitted:true when the model call fails after the email was sent", async () => {
+    streamTurn
+      .mockResolvedValueOnce(toolReply(validBrief))
+      .mockRejectedValueOnce(new Error("timeout"));
+    const res = await POST(makeRequest({ messages: history(4) }));
+    const events = await readEvents(res);
+    expect(send).toHaveBeenCalledTimes(1);
+    expect(events.at(-1)).toEqual({ type: "done", submitted: true });
+  });
+
+  it("reports submitted:true when the turn limit is reached after the email was sent", async () => {
+    streamTurn.mockResolvedValue(toolReply(validBrief));
+    const res = await POST(makeRequest({ messages: history(4) }));
+    const events = await readEvents(res);
+    expect(send).toHaveBeenCalledTimes(1);
+    expect(events.at(-1)).toEqual({ type: "done", submitted: true });
+  });
+
+  it("emits an error event when the model produced no text and nothing was submitted", async () => {
+    streamTurn.mockResolvedValue({ stop_reason: "max_tokens", content: [] });
+    const res = await POST(makeRequest({ messages: history(1) }));
+    expect(await readEvents(res)).toEqual([{ type: "error", message: "agent_unavailable" }]);
+  });
+
+  it("separates the text of consecutive turns", async () => {
+    streamTurn
+      .mockImplementationOnce(async ({ onText }) => {
+        onText("Listo, ya tengo todo.");
+        return {
+          stop_reason: "tool_use",
+          content: [
+            { type: "text", text: "Listo, ya tengo todo." },
+            { type: "tool_use", id: "tu_1", name: "submit_brief", input: { ...validBrief, email: "x" } },
+          ],
+        };
+      })
+      .mockImplementationOnce(async ({ onText }) => {
+        onText("Me falta un email válido.");
+        return textReply("Me falta un email válido.");
+      });
+    const res = await POST(makeRequest({ messages: history(4) }));
+    const texts = (await readEvents(res))
+      .filter((e) => e.type === "text")
+      .map((e) => e.text);
+    expect(texts).toEqual(["Listo, ya tengo todo.", "\n\n", "Me falta un email válido."]);
+  });
 });
