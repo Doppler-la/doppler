@@ -18,10 +18,16 @@ const MAX_TURNS = 4;
 
 type StreamEvent =
   | { type: "text"; text: string }
+  | { type: "brief"; subject: string; text: string }
   | { type: "done"; submitted: boolean }
   | { type: "error"; message: string };
 
 type SubmitOutcome = { sent: boolean; message: string };
+
+// Solo desarrollo: muestra el brief en la web en vez de enviarlo. Nunca en producción.
+function previewEnabled(): boolean {
+  return process.env.CHAT_PREVIEW_BRIEF === "true" && process.env.NODE_ENV !== "production";
+}
 
 function clientIp(request: Request): string {
   return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
@@ -49,7 +55,11 @@ async function sendBriefEmail(brief: Brief, transcript: ChatMessage[]): Promise<
   return false;
 }
 
-async function handleSubmitBrief(input: unknown, history: ChatMessage[]): Promise<SubmitOutcome> {
+async function handleSubmitBrief(
+  input: unknown,
+  history: ChatMessage[],
+  send: (event: StreamEvent) => void
+): Promise<SubmitOutcome> {
   if (countUserMessages(history) < MIN_USER_MESSAGES_FOR_BRIEF) {
     return {
       sent: false,
@@ -59,6 +69,15 @@ async function handleSubmitBrief(input: unknown, history: ChatMessage[]): Promis
   }
   const parsed = parseBrief(input);
   if (!parsed.ok) return { sent: false, message: parsed.error };
+
+  if (previewEnabled()) {
+    const { subject, text } = buildBriefEmail(parsed.brief, history);
+    send({ type: "brief", subject, text });
+    return {
+      sent: true,
+      message: "Brief enviado al equipo. Despedite en un mensaje corto, sin hacer más preguntas.",
+    };
+  }
 
   const sent = await sendBriefEmail(parsed.brief, history);
   return sent
@@ -77,9 +96,10 @@ type AgentState = { submitted: boolean };
 
 async function runAgent(
   history: ChatMessage[],
-  onText: (text: string) => void,
+  send: (event: StreamEvent) => void,
   state: AgentState
 ): Promise<void> {
+  const onText = (text: string) => send({ type: "text", text });
   const system = buildSystemPrompt({
     wrapUp: countUserMessages(history) >= WRAP_UP_USER_MESSAGES,
   });
@@ -129,7 +149,7 @@ async function runAgent(
       } else if (state.submitted) {
         content = "El brief ya fue enviado. No hagas más preguntas.";
       } else {
-        const outcome = await handleSubmitBrief(call.input, history);
+        const outcome = await handleSubmitBrief(call.input, history, send);
         if (outcome.sent) state.submitted = true;
         content = outcome.message;
         isError = !outcome.sent;
@@ -169,7 +189,7 @@ export async function POST(request: Request) {
         controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
       const state: AgentState = { submitted: false };
       try {
-        await runAgent(history, (text) => send({ type: "text", text }), state);
+        await runAgent(history, send, state);
         send({ type: "done", submitted: state.submitted });
       } catch (error) {
         console.error("Error en el chat:", error);

@@ -61,6 +61,7 @@ async function readEvents(res: Response) {
 
 describe("POST /api/chat", () => {
   beforeEach(() => {
+    vi.unstubAllEnvs();
     streamTurn.mockReset();
     send.mockReset().mockResolvedValue({ data: { id: "test" }, error: null });
     allowRequest.mockReset().mockResolvedValue(true);
@@ -272,5 +273,43 @@ describe("POST /api/chat", () => {
       .filter((e) => e.type === "text")
       .map((e) => e.text);
     expect(texts).toEqual(["Listo, ya tengo todo.", "\n\n", "Me falta un email válido."]);
+  });
+
+  it("in preview mode shows the brief to the client instead of emailing it", async () => {
+    vi.stubEnv("CHAT_PREVIEW_BRIEF", "true");
+    streamTurn
+      .mockResolvedValueOnce(toolReply(validBrief))
+      .mockResolvedValueOnce(textReply("¡Gracias, Ana!"));
+    const res = await POST(makeRequest({ messages: history(4) }));
+    const events = await readEvents(res);
+
+    expect(send).not.toHaveBeenCalled();
+    const brief = events.find((e) => e.type === "brief");
+    expect(brief.subject).toContain("Ana Pérez");
+    expect(brief.text).toContain("Canal de contacto: chat con el agente");
+    expect(events.at(-1)).toEqual({ type: "done", submitted: true });
+  });
+
+  it("ignores preview mode in production and emails the brief", async () => {
+    vi.stubEnv("CHAT_PREVIEW_BRIEF", "true");
+    vi.stubEnv("NODE_ENV", "production");
+    streamTurn
+      .mockResolvedValueOnce(toolReply(validBrief))
+      .mockResolvedValueOnce(textReply("¡Gracias, Ana!"));
+    const events = await readEvents(await POST(makeRequest({ messages: history(4) })));
+
+    expect(send).toHaveBeenCalledTimes(1);
+    expect(events.some((e) => e.type === "brief")).toBe(false);
+  });
+
+  it("does not emit a brief in preview mode when the brief is invalid", async () => {
+    vi.stubEnv("CHAT_PREVIEW_BRIEF", "true");
+    streamTurn
+      .mockResolvedValueOnce(toolReply({ ...validBrief, email: undefined }))
+      .mockResolvedValueOnce(textReply("¿Me pasás un email o teléfono?"));
+    const events = await readEvents(await POST(makeRequest({ messages: history(4) })));
+
+    expect(events.some((e) => e.type === "brief")).toBe(false);
+    expect(events.at(-1)).toEqual({ type: "done", submitted: false });
   });
 });

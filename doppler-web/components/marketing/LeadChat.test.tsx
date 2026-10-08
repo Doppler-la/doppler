@@ -106,4 +106,23 @@ describe("LeadChat", () => {
 
     await waitFor(() => expect(screen.getByText(chatContent.errorMessage)).toBeInTheDocument());
   });
+
+  it("shows the brief preview panel when the server sends a brief event", async () => {
+    stubChat([
+      { type: "text", text: "¡Gracias, Ana!" },
+      { type: "brief", subject: "Nuevo brief de descubrimiento: Ana", text: "Canal de contacto: chat con el agente" },
+      { type: "done", submitted: true },
+    ]);
+    render(<LeadChat />);
+    send("Mi mail es ana@empresa.com");
+
+    await waitFor(() => expect(screen.getByText(chatContent.previewTitle)).toBeInTheDocument());
+    expect(screen.getByText(/Nuevo brief de descubrimiento: Ana/)).toBeInTheDocument();
+    expect(screen.getByText(/Canal de contacto: chat con el agente/)).toBeInTheDocument();
+  });
+
+  it("does not show the preview panel when there is no brief event", () => {
+    render(<LeadChat />);
+    expect(screen.queryByText(chatContent.previewTitle)).not.toBeInTheDocument();
+  });
 });

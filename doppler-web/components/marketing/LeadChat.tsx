@@ -8,6 +8,7 @@ type Message = { role: "user" | "assistant"; content: string };
 type Status = "idle" | "streaming" | "error" | "closed";
 type ChatEvent =
   | { type: "text"; text: string }
+  | { type: "brief"; subject: string; text: string }
   | { type: "done"; submitted: boolean }
   | { type: "error"; message: string };
 
@@ -17,6 +18,7 @@ export default function LeadChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [status, setStatus] = useState<Status>("idle");
+  const [brief, setBrief] = useState<{ subject: string; text: string } | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,6 +66,8 @@ export default function LeadChat() {
           const chatEvent = JSON.parse(line) as ChatEvent;
           if (chatEvent.type === "text") {
             appendToReply(chatEvent.text);
+          } else if (chatEvent.type === "brief") {
+            setBrief({ subject: chatEvent.subject, text: chatEvent.text });
           } else if (chatEvent.type === "error") {
             throw new Error(chatEvent.message);
           } else {
@@ -141,6 +145,14 @@ export default function LeadChat() {
             {chatContent.sendLabel}
           </button>
         </form>
+
+        {brief && (
+          <div className="mt-6 rounded-md border border-accent/40 bg-background p-4">
+            <p className="text-sm font-semibold text-accent">{chatContent.previewTitle}</p>
+            <p className="mt-2 text-sm font-semibold text-foreground">{brief.subject}</p>
+            <pre className="mt-2 whitespace-pre-wrap text-sm text-muted">{brief.text}</pre>
+          </div>
+        )}
 
         <details className="mt-8" open={status === "error"}>
           <summary className="cursor-pointer text-sm text-muted">

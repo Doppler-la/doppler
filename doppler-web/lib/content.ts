@@ -179,4 +179,5 @@ export const chatContent = {
   errorMessage:
     "Algo falló y no pudimos continuar la conversación. Probá de nuevo o escribinos con el formulario de abajo.",
   closedNotice: "Conversación finalizada. ¡Gracias!",
+  previewTitle: "Vista previa del brief (solo desarrollo)",
 };
