@@ -6,6 +6,12 @@ const valid = {
   email: "ana@empresa.com",
   availability: "Martes y jueves por la tarde",
   problem_summary: "Cargan pedidos a mano desde WhatsApp al sistema de gestión.",
+  referral_source: "Instagram",
+  suggested_kpis: [
+    "Pedidos perdidos por semana",
+    "Tiempo de carga de un pedido",
+    "Pedidos entregados a tiempo",
+  ],
 };
 
 describe("BRIEF_TOOL", () => {
@@ -24,6 +30,28 @@ describe("parseBrief", () => {
     expect(result.brief.email).toBe("ana@empresa.com");
     expect(result.brief.volume).toBe("No informado");
     expect(result.brief.openQuestions).toEqual([]);
+    expect(result.brief.referralSource).toBe("Instagram");
+    expect(result.brief.suggestedKpis).toHaveLength(3);
+  });
+
+  it("rejects a missing referral source but accepts an omitted one as an answer", () => {
+    expect(parseBrief({ ...valid, referral_source: undefined }).ok).toBe(false);
+    expect(parseBrief({ ...valid, referral_source: "  " }).ok).toBe(false);
+    expect(parseBrief({ ...valid, referral_source: "Omitido por el cliente" }).ok).toBe(true);
+  });
+
+  it("requires 3 suggested KPIs", () => {
+    expect(parseBrief({ ...valid, suggested_kpis: undefined }).ok).toBe(false);
+    expect(parseBrief({ ...valid, suggested_kpis: ["uno", "dos"] }).ok).toBe(false);
+    expect(parseBrief({ ...valid, suggested_kpis: ["uno", 5, null, ""] }).ok).toBe(false);
+  });
+
+  it("keeps only the first 3 KPIs, truncated to 300 characters", () => {
+    const kpis = ["a".repeat(400), "b", "c", "d", "e"];
+    const result = parseBrief({ ...valid, suggested_kpis: kpis });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.brief.suggestedKpis).toEqual(["a".repeat(300), "b", "c"]);
   });
 
   it("accepts a phone number instead of an email", () => {

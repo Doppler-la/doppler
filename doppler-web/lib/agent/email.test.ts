@@ -16,6 +16,8 @@ const brief: Brief = {
   desiredOutcome: "Que se cargue solo",
   constraints: "No informado",
   openQuestions: ["¿Cuántos pedidos por día?"],
+  referralSource: "Instagram",
+  suggestedKpis: ["Pedidos perdidos por semana", "Tiempo de carga por pedido", "Pedidos a tiempo"],
 };
 
 const transcript = [
@@ -45,6 +47,15 @@ describe("buildBriefEmail", () => {
     expect(text).toContain("- ¿Cuántos pedidos por día?");
     expect(text).toContain("Cliente: Cargo pedidos a mano");
     expect(text).toContain("Agente: ¿Con qué herramientas?");
+  });
+
+  it("includes how the client found us and the 3 suggested KPIs for internal use", () => {
+    const { text } = buildBriefEmail(brief, transcript);
+    expect(text).toContain("Cómo nos conoció: Instagram");
+    expect(text).toContain("KPIS SUGERIDOS (uso interno");
+    expect(text).toContain("1. Pedidos perdidos por semana");
+    expect(text).toContain("2. Tiempo de carga por pedido");
+    expect(text).toContain("3. Pedidos a tiempo");
   });
 
   it("does not include solution hypotheses", () => {

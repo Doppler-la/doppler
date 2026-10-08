@@ -18,6 +18,16 @@ describe("buildSystemPrompt", () => {
     expect(buildSystemPrompt({ wrapUp: false })).toContain("NO proponés soluciones");
   });
 
+  it("always asks how the client found Doppler", () => {
+    expect(buildSystemPrompt({ wrapUp: false })).toContain("cómo nos conoció");
+  });
+
+  it("asks for 3 KPIs in the brief and keeps them internal", () => {
+    const prompt = buildSystemPrompt({ wrapUp: false });
+    expect(prompt).toContain("3 KPIs");
+    expect(prompt).toContain("no se los cuentes");
+  });
+
   it("adds the wrap-up instruction only when asked", () => {
     expect(buildSystemPrompt({ wrapUp: false })).not.toContain(WRAP_UP_MARKER);
     expect(buildSystemPrompt({ wrapUp: true })).toContain(WRAP_UP_MARKER);

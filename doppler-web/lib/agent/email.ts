@@ -17,6 +17,7 @@ export function buildBriefEmail(
     brief.company && `Empresa: ${brief.company}`,
     brief.email && `Email: ${brief.email}`,
     brief.phone && `Teléfono: ${brief.phone}`,
+    `Cómo nos conoció: ${brief.referralSource}`,
     `Horarios disponibles: ${brief.availability}`,
   ].filter(Boolean);
 
@@ -44,6 +45,9 @@ export function buildBriefEmail(
     `Impacto: ${brief.impact}`,
     `Resultado esperado: ${brief.desiredOutcome}`,
     `Restricciones: ${brief.constraints}`,
+    "",
+    "KPIS SUGERIDOS (uso interno: los presenta una persona del equipo en la reunión)",
+    ...brief.suggestedKpis.map((kpi, i) => `${i + 1}. ${kpi}`),
     "",
     "PREGUNTAS ABIERTAS PARA LA REUNIÓN",
     questions,

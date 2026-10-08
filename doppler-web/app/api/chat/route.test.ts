@@ -20,6 +20,8 @@ const validBrief = {
   email: "ana@empresa.com",
   availability: "Martes por la tarde",
   problem_summary: "Cargan pedidos a mano.",
+  referral_source: "Instagram",
+  suggested_kpis: ["Pedidos perdidos por semana", "Tiempo de carga", "Pedidos a tiempo"],
 };
 
 function textReply(text: string) {
@@ -160,6 +162,17 @@ describe("POST /api/chat", () => {
     expect(send).not.toHaveBeenCalled();
     const toolResult = streamTurn.mock.calls[1][0].messages.at(-1).content[0];
     expect(toolResult.is_error).toBe(true);
+  });
+
+  it("does not send an email when the brief lacks the 3 KPIs or the referral source", async () => {
+    streamTurn
+      .mockResolvedValueOnce(toolReply({ ...validBrief, suggested_kpis: ["uno"] }))
+      .mockResolvedValueOnce(toolReply({ ...validBrief, referral_source: undefined }))
+      .mockResolvedValueOnce(textReply("Seguimos."));
+    await (await POST(makeRequest({ messages: history(4) }))).text();
+    expect(send).not.toHaveBeenCalled();
+    const results = streamTurn.mock.calls[2][0].messages.at(-1).content;
+    expect(results[0].is_error).toBe(true);
   });
 
   it("sends only one email if the model calls submit_brief twice", async () => {

@@ -14,12 +14,15 @@ export type Brief = {
   desiredOutcome: string;
   constraints: string;
   openQuestions: string[];
+  referralSource: string;
+  suggestedKpis: string[];
 };
 
 export type BriefResult = { ok: true; brief: Brief } | { ok: false; error: string };
 
 const NOT_REPORTED = "No informado";
 const FIELD_MAX = 2000;
+const KPI_COUNT = 3;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const detailProperty = (description: string) => ({
@@ -52,6 +55,17 @@ export const BRIEF_TOOL: Anthropic.Tool = {
       impact: detailProperty("Impacto del problema: costo, tiempo perdido, errores."),
       desired_outcome: detailProperty("Resultado que esperan lograr."),
       constraints: detailProperty("Restricciones: plazos, presupuesto, integraciones obligatorias."),
+      referral_source: {
+        type: "string",
+        description:
+          'Cómo conoció a Doppler (redes, recomendación, búsqueda, evento, etc.). Si decidió no responder, escribí "Omitido por el cliente".',
+      },
+      suggested_kpis: {
+        type: "array",
+        items: { type: "string" },
+        description:
+          "Exactamente 3 KPIs principales para empezar a medir en el negocio que describió el cliente. Cada uno: nombre del KPI y, tras un guion, qué mide y por qué le sirve a su caso. Uso interno: no se los cuentes al cliente.",
+      },
       open_questions: {
         type: "array",
         items: { type: "string" },
@@ -59,7 +73,13 @@ export const BRIEF_TOOL: Anthropic.Tool = {
           "Preguntas para hacer en la reunión: lo que el cliente omitió y los huecos que detectaste.",
       },
     },
-    required: ["name", "availability", "problem_summary"],
+    required: [
+      "name",
+      "availability",
+      "problem_summary",
+      "referral_source",
+      "suggested_kpis",
+    ],
   },
 };
 
@@ -93,6 +113,24 @@ export function parseBrief(input: unknown): BriefResult {
     return { ok: false, error: "Falta un email o teléfono válido: pedíselo a la persona." };
   }
 
+  const referralSource = text(raw.referral_source, 300);
+  if (!referralSource) {
+    return {
+      ok: false,
+      error: "Falta preguntar cómo nos conoció: preguntáselo (puede omitirlo) antes de enviar.",
+    };
+  }
+
+  const kpis = Array.isArray(raw.suggested_kpis)
+    ? raw.suggested_kpis.map((k) => text(k, 300)).filter(Boolean)
+    : [];
+  if (kpis.length < KPI_COUNT) {
+    return {
+      ok: false,
+      error: `Faltan KPIs: sugerí ${KPI_COUNT} KPIs principales según el negocio que describió el cliente.`,
+    };
+  }
+
   const openQuestions = Array.isArray(raw.open_questions)
     ? raw.open_questions
         .map((q) => text(q, 300))
@@ -116,6 +154,8 @@ export function parseBrief(input: unknown): BriefResult {
       desiredOutcome: detail(raw.desired_outcome),
       constraints: detail(raw.constraints),
       openQuestions,
+      referralSource,
+      suggestedKpis: kpis.slice(0, KPI_COUNT),
     },
   };
 }
