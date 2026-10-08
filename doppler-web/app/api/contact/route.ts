@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       to: CONTACT_RECIPIENTS,
       replyTo: email,
       subject: `Nuevo contacto de ${name}`,
-      text: `Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`,
+      text: `Canal de contacto: formulario de respaldo\n\nNombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`,
     });
     if (sendError) throw sendError;
   } catch (error) {

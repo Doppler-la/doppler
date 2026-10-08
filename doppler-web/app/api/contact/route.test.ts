@@ -35,6 +35,7 @@ describe("POST /api/contact", () => {
         replyTo: "ignacio@example.com",
       })
     );
+    expect(send.mock.calls[0][0].text).toContain("Canal de contacto: formulario de respaldo");
   });
 
   it("returns 502 when the email fails to send", async () => {
