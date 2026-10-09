@@ -18,6 +18,9 @@ function globalDailyLimit(): number {
 
 function getLimiters(): Limiters | null {
   if (limiters !== undefined) return limiters;
+  // La integración de Vercel inyecta KV_REST_API_*; Redis.fromEnv() lee UPSTASH_REDIS_REST_*.
+  process.env.UPSTASH_REDIS_REST_URL ||= process.env.KV_REST_API_URL;
+  process.env.UPSTASH_REDIS_REST_TOKEN ||= process.env.KV_REST_API_TOKEN;
   if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
     if (isProduction()) {
       console.warn("Upstash no está configurado: el chat queda bloqueado en producción.");
