@@ -129,14 +129,22 @@ export default function LeadChat() {
           <label htmlFor="chat-input" className="sr-only">
             {chatContent.inputLabel}
           </label>
-          <input
+          <textarea
             id="chat-input"
+            rows={1}
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              // Enter envía, Shift+Enter deja el salto de línea nativo.
+              if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+                e.preventDefault();
+                e.currentTarget.form?.requestSubmit();
+              }
+            }}
             maxLength={MAX_MESSAGE_CHARS}
             disabled={locked}
             placeholder={chatContent.placeholder}
-            className="flex-1 rounded-md border border-primary/40 bg-background px-4 py-2 text-foreground disabled:opacity-50"
+            className="max-h-40 flex-1 resize-none rounded-md border border-primary/40 bg-background px-4 py-2 text-foreground [field-sizing:content] disabled:opacity-50"
           />
           <button
             type="submit"
