@@ -31,10 +31,11 @@ describe("POST /api/contact", () => {
     expect(json).toEqual({ ok: true });
     expect(send).toHaveBeenCalledWith(
       expect.objectContaining({
-        to: ["dsalamone@doppler.la", "i.irigoitia@doppler.la"],
+        to: ["dsalamone@doppler.la", "iirigoitia@doppler.la"],
         replyTo: "ignacio@example.com",
       })
     );
+    expect(send.mock.calls[0][0].text).toContain("Canal de contacto: formulario de respaldo");
   });
 
   it("returns 502 when the email fails to send", async () => {

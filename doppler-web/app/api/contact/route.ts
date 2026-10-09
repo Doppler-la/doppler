@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { CONTACT_RECIPIENTS } from "@/lib/recipients";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const CONTACT_RECIPIENTS = ["dsalamone@doppler.la", "iirigoitia@doppler.la"];
 
 type ContactBody = {
   name?: unknown;
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       to: CONTACT_RECIPIENTS,
       replyTo: email,
       subject: `Nuevo contacto de ${name}`,
-      text: `Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`,
+      text: `Canal de contacto: formulario de respaldo\n\nNombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`,
     });
     if (sendError) throw sendError;
   } catch (error) {
