@@ -15,6 +15,7 @@ export const maxDuration = 60;
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const MAX_TURNS = 4;
+const MAX_BODY_CHARS = 100_000;
 
 type StreamEvent =
   | { type: "text"; text: string }
@@ -30,7 +31,24 @@ function previewEnabled(): boolean {
 }
 
 function clientIp(request: Request): string {
-  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  return (
+    request.headers.get("x-real-ip")?.trim() ||
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    "unknown"
+  );
+}
+
+// En producción solo se acepta tráfico originado en este mismo sitio, para que otras webs
+// no puedan usar el endpoint (y gastar tokens) desde el navegador de sus visitantes.
+function isSameSite(request: Request): boolean {
+  if (process.env.NODE_ENV !== "production") return true;
+  const origin = request.headers.get("origin");
+  if (!origin) return false;
+  try {
+    return new URL(origin).host === new URL(request.url).host;
+  } catch {
+    return false;
+  }
 }
 
 async function sendBriefEmail(brief: Brief, transcript: ChatMessage[]): Promise<boolean> {
@@ -164,9 +182,22 @@ async function runAgent(
 }
 
 export async function POST(request: Request) {
+  if (!isSameSite(request)) {
+    return NextResponse.json({ ok: false, error: "forbidden" }, { status: 403 });
+  }
+
+  // El rate limit va antes de leer el body: los pedidos abusivos también consumen su cupo.
+  if (!(await allowRequest(clientIp(request)))) {
+    return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
+  }
+
+  const raw = await request.text();
+  if (raw.length > MAX_BODY_CHARS) {
+    return NextResponse.json({ ok: false, error: "body_too_large" }, { status: 413 });
+  }
   let body: unknown;
   try {
-    body = await request.json();
+    body = JSON.parse(raw);
   } catch {
     return NextResponse.json({ ok: false, error: "invalid_body" }, { status: 400 });
   }
@@ -176,11 +207,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: parsed.error }, { status: 400 });
   }
   const history = parsed.messages;
-
-  const allowed = await allowRequest(clientIp(request), countUserMessages(history) === 1);
-  if (!allowed) {
-    return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
-  }
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({

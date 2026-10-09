@@ -46,10 +46,10 @@ function history(n: number) {
   return messages;
 }
 
-function makeRequest(body: unknown) {
+function makeRequest(body: unknown, headers: Record<string, string> = {}) {
   return new Request("http://localhost/api/chat", {
     method: "POST",
-    headers: { "Content-Type": "application/json", "x-forwarded-for": "9.9.9.9" },
+    headers: { "Content-Type": "application/json", "x-forwarded-for": "9.9.9.9", ...headers },
     body: JSON.stringify(body),
   });
 }
@@ -90,12 +90,41 @@ describe("POST /api/chat", () => {
     expect(streamTurn).not.toHaveBeenCalled();
   });
 
-  it("flags a new conversation to the rate limiter only on the first user message", async () => {
+  it("rate limits by client IP, preferring x-real-ip over x-forwarded-for", async () => {
     streamTurn.mockResolvedValue(textReply("Hola"));
     await (await POST(makeRequest({ messages: history(1) }))).text();
-    await (await POST(makeRequest({ messages: history(2) }))).text();
-    expect(allowRequest).toHaveBeenNthCalledWith(1, "9.9.9.9", true);
-    expect(allowRequest).toHaveBeenNthCalledWith(2, "9.9.9.9", false);
+    await (
+      await POST(makeRequest({ messages: history(1) }, { "x-real-ip": "8.8.8.8" }))
+    ).text();
+    expect(allowRequest).toHaveBeenNthCalledWith(1, "9.9.9.9");
+    expect(allowRequest).toHaveBeenNthCalledWith(2, "8.8.8.8");
+  });
+
+  it("returns 413 for a body larger than 100 KB without calling the model", async () => {
+    const res = await POST(makeRequest({ messages: history(1), pad: "x".repeat(100_001) }));
+    expect(res.status).toBe(413);
+    expect(streamTurn).not.toHaveBeenCalled();
+  });
+
+  it("in production rejects requests without a same-site Origin", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    streamTurn.mockResolvedValue(textReply("Hola"));
+    const noOrigin = await POST(makeRequest({ messages: history(1) }));
+    const foreign = await POST(
+      makeRequest({ messages: history(1) }, { Origin: "https://evil.example" })
+    );
+    expect(noOrigin.status).toBe(403);
+    expect(foreign.status).toBe(403);
+    expect(streamTurn).not.toHaveBeenCalled();
+    expect(allowRequest).not.toHaveBeenCalled();
+  });
+
+  it("in production accepts a same-site Origin", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    streamTurn.mockResolvedValue(textReply("Hola"));
+    const res = await POST(makeRequest({ messages: history(1) }, { Origin: "http://localhost" }));
+    expect(res.status).toBe(200);
+    await res.text();
   });
 
   it("streams the reply text and finishes with submitted:false", async () => {
@@ -311,7 +340,9 @@ describe("POST /api/chat", () => {
     streamTurn
       .mockResolvedValueOnce(toolReply(validBrief))
       .mockResolvedValueOnce(textReply("¡Gracias, Ana!"));
-    const events = await readEvents(await POST(makeRequest({ messages: history(4) })));
+    const events = await readEvents(
+      await POST(makeRequest({ messages: history(4) }, { Origin: "http://localhost" }))
+    );
 
     expect(send).toHaveBeenCalledTimes(1);
     expect(events.some((e) => e.type === "brief")).toBe(false);

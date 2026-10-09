@@ -39,6 +39,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 La sección de contacto es un chat con un agente (Claude) que releva el problema del cliente y envía un brief por email al equipo. Ver `docs/superpowers/specs/2026-10-08-lead-chat-agent-design.md`.
 
-- Configurar en Vercel: `ANTHROPIC_API_KEY`, `RESEND_API_KEY` y la integración Upstash Redis (rate limit).
+- Configurar en Vercel: `ANTHROPIC_API_KEY`, `RESEND_API_KEY` y la integración Upstash Redis (rate limit). **Sin Upstash el chat queda bloqueado en producción** (el formulario de respaldo sigue funcionando).
+- Protección de gasto: límite por IP (30/hora y 60/día) y tope global diario (`CHAT_DAILY_LIMIT`, 500 por defecto); en producción solo se aceptan pedidos del mismo sitio (cabecera `Origin`). Configurar además el límite de gasto mensual en la consola de Anthropic.
+- Nunca nombrar una variable con prefijo `NEXT_PUBLIC_` si es una clave: ese prefijo la publica en el navegador. Hay un test (`lib/security.test.ts`) que lo vigila.
 - **Medir el consumo de la web:** crear en la consola de la API de Anthropic un *workspace* exclusivo para la web con su propia API key, y usar esa key solo en Vercel. Así el uso y el costo se pueden filtrar por workspace/key y comparar con el resto. Configurar además un límite de gasto mensual en ese workspace.
 - Cambiar el modelo con `CHAT_MODEL` (por ejemplo `claude-haiku-5-5` para bajar costos).
