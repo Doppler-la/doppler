@@ -22,6 +22,7 @@ export default function LeadChat() {
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (messages.length === 0) return; // evita scrollear la página al montar
     endRef.current?.scrollIntoView?.({ behavior: "smooth" });
   }, [messages]);
 
