@@ -125,7 +125,7 @@ export default function LeadChat() {
           <p className="mt-3 text-sm text-accent">{chatContent.closedNotice}</p>
         )}
 
-        <form onSubmit={handleSubmit} className="mt-4 flex gap-3">
+        <form onSubmit={handleSubmit} className="mt-4 flex items-end gap-3">
           <label htmlFor="chat-input" className="sr-only">
             {chatContent.inputLabel}
           </label>
