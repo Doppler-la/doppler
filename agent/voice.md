@@ -19,6 +19,17 @@ automatización con IA, consultoría técnica.
   por qué importa para quien construye software o automatiza procesos, una opinión honesta.
 - **(b) Caso Doppler**: un aprendizaje real de un proyecto nuestro. Sale de `ideas.md`.
 
+## Traducir novedades técnicas
+
+Para tipo (a), sobre todo los que vienen de links que manda Ignacio: el público
+no es técnico.
+
+- Cero jerga sin explicar. "Gzip" → "comprime el mensaje, como un .zip".
+- Una analogía cotidiana por hilo, no más.
+- Contá qué cambia para quien lo usa, no cómo está implementado.
+- Cerrá con por qué le importa a alguien que maneja una empresa o un equipo.
+- No copies el texto del tweet original: reexplicalo con tus palabras.
+
 ## Ejemplo real (tipo b)
 
 1/ No es el caso de una clínica puntual: armamos una plataforma propia (SaaS) para

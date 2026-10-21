@@ -8,6 +8,11 @@ a la próxima fecha, `getUpdates` ya habría descartado la respuesta a las 24 h)
 La redacción de borradores nuevos queda restringida a lun/mié/vie dentro del
 `playbook.md`, no en el cron.
 
+**Compartir un tweet:** mandale el link (`x.com/.../status/<id>`) al bot de
+Telegram, con una nota opcional ("explicalo simple"). La próxima corrida lo
+convierte en borrador, cualquier día de la semana. Solo se acepta el chat de
+`TELEGRAM_CHAT_ID`.
+
 - `playbook.md` — qué hace la rutina en cada corrida.
 - `voice.md` — tono y ejemplos. Editá esto para ajustar el estilo.
 - `sources.json` — fuentes que monitorea. Agregá/sacá acá.

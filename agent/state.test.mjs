@@ -33,8 +33,8 @@ function fresh() {
 test("un draft aprobado por Telegram se puede publicar y luego pasa a history", () => {
   const s = fresh();
   const res = applyTelegramUpdates(s, [
-    { update_id: 5, callback_query: { data: "approve:d1" } },
-  ]);
+    { update_id: 5, callback_query: { data: "approve:d1", message: { chat: { id: 7 } } } },
+  ], 7);
   assert.deepEqual(res.approved, ["d1"]);
   assert.equal(s.drafts.last_telegram_update_id, 5);
   assert.equal(publishableDrafts(s).length, 1);
@@ -55,7 +55,7 @@ test("no se re-publica un id que ya está en history.published", () => {
 
 test("un tema rechazado se detecta como visto (dedup en investigación)", () => {
   const s = fresh();
-  applyTelegramUpdates(s, [{ update_id: 2, callback_query: { data: "reject:d1" } }]);
+  applyTelegramUpdates(s, [{ update_id: 2, callback_query: { data: "reject:d1", message: { chat: { id: 7 } } } }], 7);
   recordRejected(s, "d1");
   assert.equal(s.drafts.drafts.length, 0);
   assert.equal(isTopicSeen(s, { source_url: "https://x/1", topic: "otro" }), true);
@@ -79,6 +79,30 @@ test("prunePending barre a history los drafts rejected huérfanos", () => {
   assert.deepEqual(pruned, []);
   assert.equal(s.drafts.drafts.length, 0);
   assert.equal(s.history.rejected.length, 1);
+});
+
+test("links de tweets del chat autorizado van al inbox, sin duplicados", () => {
+  const s = fresh();
+  const msg = (id, text) => ({ update_id: id, message: { chat: { id: 7 }, text } });
+  const res = applyTelegramUpdates(s, [
+    msg(1, "explicalo simple https://x.com/ClaudeDevs/status/2111209208012210409?s=20"),
+    msg(2, "https://twitter.com/ClaudeDevs/status/2111209208012210409"),
+    msg(3, "hola, no soy un link"),
+  ], 7);
+  assert.equal(res.inbox.length, 1);
+  assert.equal(res.inbox[0].tweet_id, "2111209208012210409");
+  assert.equal(res.inbox[0].note, "explicalo simple");
+  assert.equal(s.drafts.last_telegram_update_id, 3);
+});
+
+test("mensajes y botones de otro chat (o sin chatId) se ignoran", () => {
+  const s = fresh();
+  const link = { update_id: 1, message: { chat: { id: 99 }, text: "https://x.com/a/status/1" } };
+  const btn = { update_id: 2, callback_query: { data: "approve:d1", message: { chat: { id: 99 } } } };
+  assert.deepEqual(applyTelegramUpdates(s, [link, btn], 7), { approved: [], rejected: [], inbox: [] });
+  assert.equal(applyTelegramUpdates(s, [link, btn]).inbox.length, 0);
+  assert.equal(s.drafts.drafts[0].status, "pending");
+  assert.equal(s.drafts.last_telegram_update_id, 2);
 });
 
 test("saveState y loadState hacen round-trip", () => {

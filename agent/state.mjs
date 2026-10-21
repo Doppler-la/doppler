@@ -14,12 +14,30 @@ export function saveState(state, dir = new URL("state/", import.meta.url)) {
   writeFileSync(new URL("history.json", dir), JSON.stringify(state.history, null, 2) + "\n");
 }
 
-export function applyTelegramUpdates(state, updates) {
+const X_STATUS = /(?:x|twitter)\.com\/(\w+)\/status\/(\d+)/;
+
+// chatId es obligatorio: sin él (o con otro chat) se ignora todo, así nadie
+// más que vos puede aprobar drafts ni meter links en el inbox.
+export function applyTelegramUpdates(state, updates, chatId) {
   const approved = [], rejected = [];
+  const inbox = (state.drafts.inbox ??= []);
   for (const u of updates) {
     if (u.update_id > state.drafts.last_telegram_update_id) {
       state.drafts.last_telegram_update_id = u.update_id;
     }
+    const chat = u.callback_query?.message?.chat?.id ?? u.message?.chat?.id;
+    if (!chatId || String(chat) !== String(chatId)) continue;
+
+    const text = u.message?.text ?? u.message?.caption;
+    const m = text?.match(X_STATUS);
+    if (m && !inbox.some((l) => l.tweet_id === m[2])) {
+      inbox.push({
+        tweet_id: m[2], url: `https://x.com/${m[1]}/status/${m[2]}`,
+        note: text.replace(/https?:\/\/\S+/g, "").trim() || null,
+        received_at: new Date().toISOString(),
+      });
+    }
+
     const data = u.callback_query?.data;
     if (!data) continue;
     const [action, id] = data.split(":");
@@ -28,7 +46,7 @@ export function applyTelegramUpdates(state, updates) {
     if (action === "approve") { draft.status = "approved"; approved.push(id); }
     if (action === "reject") { draft.status = "rejected"; rejected.push(id); }
   }
-  return { approved, rejected };
+  return { approved, rejected, inbox };
 }
 
 export function isAlreadyPublished(state, draftId) {

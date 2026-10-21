@@ -43,15 +43,20 @@ node --input-type=module -e '
 import { loadState, saveState, applyTelegramUpdates, prunePending, recordRejected } from "./agent/state.mjs";
 const updates = JSON.parse(process.env.TG_UPDATES).result;
 const s = loadState();
-const { approved, rejected } = applyTelegramUpdates(s, updates);
+const { approved, rejected, inbox } = applyTelegramUpdates(s, updates, process.env.TELEGRAM_CHAT_ID);
 rejected.forEach((id) => recordRejected(s, id));
 const pruned = prunePending(s);
 saveState(s);
-console.log(JSON.stringify({ approved, rejected, pruned }));
+console.log(JSON.stringify({ approved, rejected, pruned, inbox }));
 '
 ```
 
-(pasás el JSON de `getUpdates` en `TG_UPDATES`.)
+(pasás el JSON de `getUpdates` en `TG_UPDATES`.) Solo cuenta lo que viene del
+chat `TELEGRAM_CHAT_ID`; todo lo demás se ignora.
+
+`inbox` son los links de tweets que Ignacio mandó al bot para que los
+convirtamos en hilo (`{tweet_id, url, note}`). Quedan persistidos en
+`drafts.json` hasta que se usan en el paso 5.
 
 ## 3. Publicar los aprobados
 
@@ -85,10 +90,35 @@ Por cada id en `pruned`: mandá a Telegram
 
 (Los rechazados ya pasaron a `history` en el script del paso 2.)
 
-**Chequeo M/M/V:** si hoy NO es lunes, miércoles o viernes, terminá acá — no
-hay que redactar borradores nuevos. (El estado ya se commiteó en el paso 3.)
+**Chequeo M/M/V:** si hoy NO es lunes, miércoles o viernes **y** `state.drafts.inbox`
+está vacío, terminá acá — no hay que redactar borradores nuevos. (El estado ya
+se commiteó en el paso 3.) Si hay links en el inbox se sigue cualquier día, pero
+solo con el paso 5a: saltá el resto del paso 5 y el paso 6.
+
+## 5a. Links del inbox (tienen prioridad)
+
+Por cada entrada de `state.drafts.inbox`, leé el tweet (endpoint no oficial, sin login):
+
+```bash
+curl -s "https://cdn.syndication.twimg.com/tweet-result?id=<tweet_id>&token=a"
+```
+
+Usá `text` (y `created_at`). Si responde vacío o error, avisá a Telegram
+`⚠️ no pude leer <url>, pegame el texto del tweet` y dejá la entrada en el inbox.
+Si Ignacio pegó el texto en `note`, usá eso.
+
+Armá un borrador tipo (a) con `source_url` = la url del tweet. Descartá si
+`isTopicSeen` da true. El hilo **explica la novedad para gente no técnica** (ver
+"Traducir novedades técnicas" en `voice.md`) y es original: se toma la idea, no
+el texto del tweet. Si hay `note`, es una instrucción de Ignacio: seguila.
+
+Cuando termines de redactar, vaciá lo procesado (`s.drafts.inbox = []`, o
+filtrá las que fallaron) junto con el push de los borradores al estado.
 
 ## 5. Investigar fuentes
+
+(Solo lun/mié/vie. Si ya redactaste borradores desde el inbox, hacen falta
+menos de los 2 del objetivo; completá hasta 2 en total.)
 
 Leé `agent/sources.json`.
 
