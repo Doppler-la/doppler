@@ -1,1 +1,36 @@
-{ "last_telegram_update_id": 0, "inbox": [], "drafts": [] }
+{
+  "last_telegram_update_id": 259905319,
+  "inbox": [],
+  "drafts": [
+    {
+      "id": "2026-10-21-obituario-programar",
+      "type": "a",
+      "topic": "Obituario para programar: agentes de código y el cambio del oficio",
+      "source_url": "https://simonwillison.net/2026/Oct/19/my-obituary-for-programming/",
+      "thread": [
+        "Un programador escribió un 'obituario' de su oficio y le pegó fuerte a mucha gente del rubro. No es drama: dice algo que le pasa a cualquiera que trabaje con tecnología hoy 🧵",
+        "Su idea: programar era un trabajo hermoso porque eran acertijos que solo vos sabías resolver. Te traían un problema, lo resolvías a tu manera, ponías los tiempos y decías qué se podía y qué no. Los asistentes de IA le sacan parte de ese placer.",
+        "Lo entendemos, porque lo vivimos desde adentro. Pero desde el otro lado, el de quien necesita el software, pasa algo distinto: lo que antes tardaba meses y costaba una fortuna hoy se prueba en días. Es como pasar de cavar con pala a tener una retroexcavadora.",
+        "Nuestra opinión: el oficio no muere, cambia de lugar. Menos tipear, más entender qué problema real tiene el negocio y revisar bien lo que la máquina propone. Para una empresa, la ventaja es de quien aprende a pedir bien, no de quien tiene más horas de tipeo."
+      ],
+      "telegram_message_id": 7,
+      "status": "pending",
+      "created_at": "2026-10-21T14:57:21.207Z"
+    },
+    {
+      "id": "2026-10-21-oss-scanner",
+      "type": "a",
+      "topic": "Anthropic OSS Scanner: escaneos de seguridad gratis para proyectos open source",
+      "source_url": "https://x.com/claudedevs/status/2112299602510749992",
+      "thread": [
+        "Anthropic lanzó algo que te toca aunque nunca hayas escrito una línea de código: escaneos de seguridad gratis para proyectos open source, hechos por su IA más potente. Te cuento por qué importa 🧵",
+        "Casi todo el software que usás (tu web, tu sistema de gestión, tu app) está armado con piezas open source, mantenidas muchas veces por una sola persona en su tiempo libre. Es como un edificio que depende de una cañería que arregla un vecino voluntario.",
+        "OSS Scanner revisa esos proyectos cada cierto tiempo, como un control de rutina. Cada problema que encuentra viene con la prueba de que se puede explotar y, si se puede, con el arreglo ya escrito. Menos 'creo que hay algo raro', más 'acá está el problema y la solución'.",
+        "Nuestra opinión: si tu empresa depende de software, tu seguridad depende también de esas piezas invisibles. Que alguien las revise gratis y de forma periódica es de las mejores noticias del año para quien maneja un negocio. Ahora falta que los proyectos se sumen."
+      ],
+      "telegram_message_id": 9,
+      "status": "pending",
+      "created_at": "2026-10-21T14:57:32.042Z"
+    }
+  ]
+}
