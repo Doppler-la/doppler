@@ -145,7 +145,8 @@ Objetivo: 2 borradores por corrida. Mezcla ideal: 1 tipo (a) + 1 tipo (b) si hay
 idea disponible; si no, 2 tipo (a). Si las fuentes no dieron nada relevante, usá
 `open_search_topics` con WebSearch como fallback.
 
-Seguí `agent/voice.md` al pie. Cada borrador es un objeto `Draft`:
+Seguí `agent/voice.md` al pie, incluido el **cierre comercial**: el último tweet
+de todo hilo invita a contactarnos para implementar lo que se contó. Cada borrador es un objeto `Draft`:
 
 ```json
 {

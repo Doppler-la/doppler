@@ -13,6 +13,20 @@ automatización con IA, consultoría técnica.
 - Cada tweet del hilo se entiende solo pero engancha con el siguiente.
 - Máx. 280 caracteres por tweet. Hilos de 2 a 6 tweets.
 
+## Cierre comercial (siempre)
+
+Todo hilo termina con un último tweet propio que invita a contactarnos para
+implementar lo que se contó. Es lo que convierte el contenido en clientes.
+
+- Siempre es el **último** tweet, separado de la opinión. Cuenta dentro del máx. de 6.
+- Conecta con el tema del hilo: ofrecemos ayudar a implementar *eso*, no un
+  "contactanos" genérico.
+- Tono de oferta de ayuda concreta, no de venta: "en Doppler te ayudamos a...".
+- Cierra con el sitio: www.doppler.la (ahí hay un chat para contarnos el caso).
+- Sin presión ni urgencia falsa, sin "oferta", sin "solución integral".
+- Ejemplo: "Si querés ver qué tan expuesta está tu empresa y cómo usar estas
+  herramientas, en Doppler te ayudamos a implementarlo. Contanos tu caso en www.doppler.la"
+
 ## Tipos de contenido
 
 - **(a) Comentario**: una herramienta / proyecto / novedad que encontramos. Qué es,
