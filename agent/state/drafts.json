@@ -1,5 +1,5 @@
 {
-  "last_telegram_update_id": 259905319,
+  "last_telegram_update_id": 259905321,
   "inbox": [],
   "drafts": [
     {
@@ -31,7 +31,7 @@
         "Si tu empresa depende de software y querés saber qué tan expuesta está, en Doppler te ayudamos a revisarlo y a implementar estas herramientas. Contanos tu caso en www.doppler.la"
       ],
       "telegram_message_id": 9,
-      "status": "pending",
+      "status": "approved",
       "created_at": "2026-10-21T14:57:32.042Z"
     }
   ]
