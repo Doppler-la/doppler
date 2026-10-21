@@ -1,4 +1,12 @@
 {
-  "published": [],
+  "published": [
+    {
+      "id": "2026-10-21-oss-scanner",
+      "topic": "Anthropic OSS Scanner: escaneos de seguridad gratis para proyectos open source",
+      "source_url": "https://x.com/claudedevs/status/2112299602510749992",
+      "x_post_id": "2112937800303628355",
+      "published_at": "2026-10-21T16:03:24.106Z"
+    }
+  ],
   "rejected": []
 }

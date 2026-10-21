@@ -17,22 +17,6 @@
       "telegram_message_id": 7,
       "status": "pending",
       "created_at": "2026-10-21T14:57:21.207Z"
-    },
-    {
-      "id": "2026-10-21-oss-scanner",
-      "type": "a",
-      "topic": "Anthropic OSS Scanner: escaneos de seguridad gratis para proyectos open source",
-      "source_url": "https://x.com/claudedevs/status/2112299602510749992",
-      "thread": [
-        "Anthropic lanzó algo que te toca aunque nunca hayas escrito una línea de código: escaneos de seguridad gratis para proyectos open source, hechos por su IA más potente. Te cuento por qué importa 🧵",
-        "Casi todo el software que usás (tu web, tu sistema de gestión, tu app) está armado con piezas open source, mantenidas muchas veces por una sola persona en su tiempo libre. Es como un edificio que depende de una cañería que arregla un vecino voluntario.",
-        "OSS Scanner revisa esos proyectos cada cierto tiempo, como un control de rutina. Cada problema que encuentra viene con la prueba de que se puede explotar y, si se puede, con el arreglo ya escrito. Menos 'creo que hay algo raro', más 'acá está el problema y la solución'.",
-        "Nuestra opinión: si tu empresa depende de software, tu seguridad depende también de esas piezas invisibles. Que alguien las revise gratis y de forma periódica es de las mejores noticias del año para quien maneja un negocio. Ahora falta que los proyectos se sumen.",
-        "Si tu empresa depende de software y querés saber qué tan expuesta está, en Doppler te ayudamos a revisarlo y a implementar estas herramientas. Contanos tu caso en www.doppler.la"
-      ],
-      "telegram_message_id": 9,
-      "status": "approved",
-      "created_at": "2026-10-21T14:57:32.042Z"
     }
   ]
 }
