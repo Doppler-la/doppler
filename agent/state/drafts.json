@@ -1,5 +1,5 @@
 {
-  "last_telegram_update_id": 259905321,
+  "last_telegram_update_id": 259905322,
   "inbox": [],
   "drafts": [
     {
@@ -17,6 +17,22 @@
       "telegram_message_id": 7,
       "status": "pending",
       "created_at": "2026-10-21T14:57:21.207Z"
+    },
+    {
+      "id": "2026-10-22-php-vulnerabilidades-ia",
+      "type": "a",
+      "topic": "Vulnerabilidades críticas en PHP encontradas con IA tras 10 años",
+      "source_url": "https://x.com/santtiagom_/status/2112922141263864124",
+      "thread": [
+        "Investigadores encontraron fallas de seguridad críticas en PHP, el lenguaje detrás de buena parte de los sitios web del mundo. Llevaban más de 10 años sin que nadie las viera. Lo interesante es cómo las encontraron 🧵",
+        "Las encontraron con ayuda de modelos de IA. Es como tener un revisor que no se cansa y puede leer millones de líneas de código sin aburrirse, buscando el error que a un humano se le pasa después de mil lecturas.",
+        "Ojo: la IA no reemplazó a los especialistas. Trabajaron equipos de investigadores y mantenedores del proyecto, y la IA aceleró la búsqueda. Y no fue un solo equipo: varias empresas llegaron a hallazgos parecidos con herramientas distintas.",
+        "Lo que cambia: revisar código ya no es un lujo de empresas gigantes. Si tu negocio corre sobre software propio o a medida, hoy es mucho más barato encontrar los puntos débiles antes de que los encuentre otro.",
+        "Si querés revisar qué tan expuesto está el software de tu empresa y cómo usar estas herramientas, en Doppler te ayudamos a implementarlo. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": 17,
+      "status": "pending",
+      "created_at": "2026-10-22T15:56:33.575Z"
     }
   ]
 }
