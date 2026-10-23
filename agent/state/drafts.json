@@ -17,6 +17,23 @@
       "telegram_message_id": 7,
       "status": "pending",
       "created_at": "2026-10-21T14:57:21.207Z"
+    },
+    {
+      "id": "2026-10-23-agent-skills-fundacion",
+      "type": "a",
+      "topic": "Agent Skills donadas a la Agentic AI Foundation",
+      "source_url": "https://simonwillison.net/2026/Oct/22/donating-agent-skills/",
+      "thread": [
+        "Anthropic acaba de ceder las 'Agent Skills' a una fundación neutral del Linux Foundation. Suena a sopa de letras, pero es una buena noticia para cualquier empresa que quiera usar IA sin quedar atada a un proveedor 🧵",
+        "Primero, qué son: una skill es un manual de instrucciones que le das a un asistente de IA. Por ejemplo: 'así hacemos acá una factura', 'así respondemos un reclamo'. Lo escribís una vez y el asistente lo sigue siempre.",
+        "Hasta ahora ese manual tenía un formato propuesto por una sola empresa. Ahora pasa a ser un estándar abierto, de nadie en particular. Es como el enchufe: si todos usan el mismo, no tenés que cambiar los aparatos cada vez que cambiás de proveedor de electricidad.",
+        "Qué cambia para quien maneja un equipo: el conocimiento de tu empresa, cómo trabajás y qué reglas seguís, queda escrito en un formato que puede viajar entre herramientas. Invertís una vez, no cada vez que aparece un asistente nuevo.",
+        "Nuestra opinión: los estándares abiertos son lo más aburrido y lo más valioso de esta ola de IA. Evitan que lo que armaste hoy se tire a la basura en un año.",
+        "Si querés convertir cómo trabaja tu equipo en skills que un asistente de IA pueda seguir, en Doppler te ayudamos a implementarlo. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": null,
+      "status": "pending",
+      "created_at": "2026-10-23T12:07:46.753Z"
     }
   ]
 }
