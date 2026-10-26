@@ -31,9 +31,42 @@
         "Nuestra opinión: los estándares abiertos son lo más aburrido y lo más valioso de esta ola de IA. Evitan que lo que armaste hoy se tire a la basura en un año.",
         "Si querés convertir cómo trabaja tu equipo en skills que un asistente de IA pueda seguir, en Doppler te ayudamos a implementarlo. Contanos tu caso en www.doppler.la"
       ],
-      "telegram_message_id": null,
+      "telegram_message_id": 22,
       "status": "pending",
       "created_at": "2026-10-23T12:07:46.753Z"
+    },
+    {
+      "id": "2026-10-26-kimi-k31-modelo-abierto",
+      "type": "a",
+      "topic": "Kimi K3.1 Pro: modelo casi abierto que iguala a los grandes a mitad de precio",
+      "source_url": "https://simonwillison.net/2026/Oct/23/kimi-k31-pro/",
+      "thread": [
+        "Una empresa china lanzó un modelo de IA que rinde casi igual que los mejores de Estados Unidos, cuesta la mitad y en pocas semanas va a poder descargarse gratis. Para quien paga IA todos los meses, esto importa 🧵",
+        "Se llama Kimi K3.1 Pro. En las pruebas independientes quedó segundo, apenas detrás de Claude Opus 5.5 y por encima de otros modelos de punta. Cuesta la mitad que Opus 5.5 por cada texto que procesa.",
+        "Lo especial: Moonshot, la empresa que lo hizo, prometió publicar el 'cerebro' del modelo (sus pesos) antes del 4 de noviembre. Es como si una cocina famosa te regalara la receta: podés cocinar en tu propia casa, sin pagar por plato.",
+        "Qué cambia para una empresa: si tus datos son delicados, o la factura de IA crece cada mes, aparece una opción real de correr un modelo muy bueno en tus propios servidores. Hace un año eso era un sacrificio de calidad. Hoy casi no.",
+        "Nuestra opinión: los modelos van a ser cada vez más parecidos y más baratos. La ventaja no está en elegir el 'mejor' sino en saber usar cualquiera, y poder cambiar sin rehacer todo.",
+        "Si querés ver qué modelo te conviene para automatizar procesos en tu empresa, y armarlo para que puedas cambiarlo cuando quieras, en Doppler te ayudamos a implementarlo. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": 24,
+      "status": "pending",
+      "created_at": "2026-10-26T12:10:48.887Z"
+    },
+    {
+      "id": "2026-10-26-kinesiologos-rutinas",
+      "type": "b",
+      "topic": "Caso Doppler: plataforma para kinesiólogos con rutinas de ejercicios automáticas",
+      "source_url": null,
+      "thread": [
+        "No es el caso de una clínica puntual: armamos una plataforma propia (SaaS) para kinesiólogos. Y el cambio más grande que trajo no fue la agenda: fue lo que pasa cuando el paciente se va de la clínica 🧵",
+        "Los kinesiólogos que la usan tenían que armar a mano, después de cada tratamiento presencial, una rutina de ejercicios para que el paciente siguiera en su casa, personalizada según la patología con la que había ingresado. Eso les comía tiempo entre paciente y paciente.",
+        "Lo que hicimos: la plataforma genera esa rutina sola a partir de la patología. El profesional la revisa, la ajusta si hace falta y se la manda al paciente. Pasó de ser un trabajo de armado a uno de revisión.",
+        "El aprendizaje: automatizar no es sacar al profesional del medio. Es sacarle la parte repetitiva y dejarle la decisión. El criterio clínico sigue siendo del kinesiólogo.",
+        "Si tu negocio tiene una tarea que se repite después de cada cliente o cada servicio, probablemente se puede automatizar. En Doppler te ayudamos a implementarlo. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": 26,
+      "status": "pending",
+      "created_at": "2026-10-26T12:10:48.887Z"
     }
   ]
 }

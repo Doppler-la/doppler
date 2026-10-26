@@ -5,7 +5,8 @@ El agente toma la primera sin marcar y, al usarla, la mueve a "Usadas".
 
 ## Pendientes
 
-- (ejemplo, borrar) La plataforma para kinesiólogos: generación automática de
-  rutinas de ejercicios personalizadas por patología.
 
 ## Usadas
+
+- (ejemplo, borrar) La plataforma para kinesiólogos: generación automática de
+  rutinas de ejercicios personalizadas por patología. (usada 2026-10-26)
