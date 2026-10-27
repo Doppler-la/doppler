@@ -9,7 +9,7 @@ export const navLinks: NavLink[] = [
 
 export const heroContent = {
   eyebrow: "Software Factory",
-  headline: "Construimos tecnología para Startups, Pymes y Empresas",
+  headline: "Desarrollo de software e IA para Startups, Pymes y Empresas",
   subheadline:
     "Desarrollamos software a medida e impulsamos tu negocio con IA para automatizaciones que generan resultados reales.",
   ctaLabel: "Hablemos hoy",
