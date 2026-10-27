@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { footerLinks } from "@/lib/content";
+import { footerLinks, socialLinks } from "@/lib/content";
 import DopplerMark from "./DopplerMark";
 
 export default function Footer() {
@@ -21,6 +21,17 @@ export default function Footer() {
             >
               {link.label}
             </Link>
+          ))}
+          {socialLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer me"
+              className="text-sm text-muted transition-colors hover:text-foreground"
+            >
+              {link.label}
+            </a>
           ))}
         </nav>
         <p className="text-sm text-muted">

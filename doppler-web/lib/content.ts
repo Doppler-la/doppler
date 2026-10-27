@@ -168,6 +168,8 @@ export const footerLinks: NavLink[] = [
   { label: "Contacto", href: "#contacto" },
 ];
 
+export const socialLinks: NavLink[] = [{ label: "X", href: "https://x.com/dopplerla" }];
+
 export const chatContent = {
   heading: "Hablemos de tu proyecto",
   greeting:
