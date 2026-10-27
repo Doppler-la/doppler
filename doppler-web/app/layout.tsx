@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { socialLinks } from "@/lib/content";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.doppler.la"),
   title,
   description,
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "es_AR",
@@ -38,10 +40,27 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Doppler",
+  description,
+  url: "https://www.doppler.la",
+  logo: "https://www.doppler.la/doppler-logo.png",
+  image: "https://www.doppler.la/og-image.png",
+  sameAs: socialLinks.map((link) => link.href),
+  areaServed: "Latin America",
+  knowsLanguage: "es",
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         {children}
       </body>
     </html>
