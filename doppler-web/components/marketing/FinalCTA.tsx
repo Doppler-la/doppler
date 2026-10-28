@@ -1,4 +1,6 @@
 import Link from "next/link";
+import WhatsAppLink from "./WhatsAppLink";
+import { getWhatsAppNumber } from "@/lib/site";
 
 export default function FinalCTA() {
   return (
@@ -13,6 +15,11 @@ export default function FinalCTA() {
         >
           Empecemos
         </Link>
+        <WhatsAppLink
+          number={getWhatsAppNumber()}
+          label="Escribinos por WhatsApp"
+          className="mt-4 block text-sm font-semibold text-accent underline-offset-4 hover:underline"
+        />
       </div>
     </section>
   );

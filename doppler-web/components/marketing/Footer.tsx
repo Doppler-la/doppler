@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { footerLinks, socialLinks } from "@/lib/content";
+import { getWhatsAppNumber } from "@/lib/site";
 import DopplerMark from "./DopplerMark";
+import WhatsAppLink from "./WhatsAppLink";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -33,6 +35,11 @@ export default function Footer() {
               {link.label}
             </a>
           ))}
+          <WhatsAppLink
+            number={getWhatsAppNumber()}
+            label="WhatsApp"
+            className="text-sm text-muted transition-colors hover:text-foreground"
+          />
         </nav>
         <p className="text-sm text-muted">
           © {year} Doppler. Todos los derechos reservados.
