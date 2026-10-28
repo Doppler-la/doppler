@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import ContactForm from "./ContactForm";
 import { chatContent } from "@/lib/content";
+import { trackLead } from "@/lib/analytics";
 
 type Message = { role: "user" | "assistant"; content: string };
 type Status = "idle" | "streaming" | "error" | "closed";
@@ -73,6 +74,7 @@ export default function LeadChat() {
             throw new Error(chatEvent.message);
           } else {
             finished = true;
+            if (chatEvent.submitted) trackLead("chat");
             setStatus(chatEvent.submitted ? "closed" : "idle");
           }
         }

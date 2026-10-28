@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { trackLead } from "@/lib/analytics";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -21,6 +22,7 @@ export default function ContactForm() {
       });
       if (!res.ok) throw new Error("request failed");
       setStatus("success");
+      trackLead("form");
       setName("");
       setEmail("");
       setMessage("");

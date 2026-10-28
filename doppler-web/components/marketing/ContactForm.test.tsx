@@ -4,6 +4,7 @@ import ContactForm from "./ContactForm";
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  delete window.gtag;
 });
 
 function fillAndSubmit() {
@@ -30,6 +31,29 @@ describe("ContactForm", () => {
     await waitFor(() =>
       expect(screen.getByText("¡Gracias! Te vamos a contactar pronto.")).toBeInTheDocument()
     );
+  });
+
+  it("tracks a lead only when the submission succeeds", async () => {
+    window.gtag = vi.fn();
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true }));
+    render(<ContactForm />);
+
+    fillAndSubmit();
+
+    await waitFor(() =>
+      expect(window.gtag).toHaveBeenCalledWith("event", "generate_lead", { method: "form" })
+    );
+  });
+
+  it("does not track a lead when the request fails", async () => {
+    window.gtag = vi.fn();
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("network error")));
+    render(<ContactForm />);
+
+    fillAndSubmit();
+
+    await waitFor(() => expect(screen.getByLabelText("Nombre")).toHaveValue("Ignacio"));
+    expect(window.gtag).not.toHaveBeenCalled();
   });
 
   it("shows an error message when the request fails", async () => {
