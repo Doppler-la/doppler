@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { socialLinks } from "@/lib/content";
+import { siteUrl } from "@/lib/site";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -20,7 +21,7 @@ const description =
   "Desarrollo de software e IA para automatizaciones que generan resultados. Trabajamos con startups, pymes y empresas.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.doppler.la"),
+  metadataBase: new URL(siteUrl),
   title,
   description,
   alternates: { canonical: "/" },
@@ -46,9 +47,9 @@ const organizationJsonLd = {
   "@type": "ProfessionalService",
   name: "Doppler",
   description,
-  url: "https://www.doppler.la",
-  logo: "https://www.doppler.la/doppler-logo.png",
-  image: "https://www.doppler.la/og-image.png",
+  url: siteUrl,
+  logo: `${siteUrl}/doppler-logo.png`,
+  image: `${siteUrl}/og-image.png`,
   sameAs: socialLinks.map((link) => link.href),
   areaServed: "Latin America",
   knowsLanguage: "es",
