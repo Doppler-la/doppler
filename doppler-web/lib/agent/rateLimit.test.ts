@@ -62,6 +62,19 @@ describe("allowRequest without Upstash", () => {
   });
 });
 
+describe("allowRequest with Vercel KV variables", () => {
+  it("falls back to KV_REST_API_* when UPSTASH_REDIS_REST_* are missing", async () => {
+    vi.stubEnv("UPSTASH_REDIS_REST_URL", "");
+    vi.stubEnv("UPSTASH_REDIS_REST_TOKEN", "");
+    vi.stubEnv("KV_REST_API_URL", "https://example.upstash.io");
+    vi.stubEnv("KV_REST_API_TOKEN", "token");
+    const allowRequest = await load();
+    expect(await allowRequest("1.2.3.4")).toBe(true);
+    expect(limits["chat:hourly"]).toHaveBeenCalledWith("1.2.3.4");
+    expect(process.env.UPSTASH_REDIS_REST_URL).toBe("https://example.upstash.io");
+  });
+});
+
 describe("allowRequest with Upstash", () => {
   it("allows a request that is under every limit, keyed by IP and by a global key", async () => {
     configureUpstash();
