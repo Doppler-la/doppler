@@ -67,6 +67,40 @@
       "telegram_message_id": 26,
       "status": "pending",
       "created_at": "2026-10-26T12:10:48.887Z"
+    },
+    {
+      "id": "2026-10-28-gpt61-terra-computer-use",
+      "type": "a",
+      "topic": "GPT-6.1 Terra: modelo de precio medio enfocado en usar la computadora y leer imágenes",
+      "source_url": "https://simonwillison.net/2026/Oct/26/gpt-61-terra/",
+      "thread": [
+        "OpenAI lanzó un modelo que no apunta a ser el más inteligente, sino a hacer el trabajo repetitivo de oficina: llenar formularios, leer planos, editar videos. Y cuesta barato 🧵",
+        "Se llama GPT-6.1 Terra. Su fuerte es 'usar la computadora' como lo haría una persona: mirar la pantalla, hacer clic, escribir en los campos. También entiende imágenes, como un plano técnico o una captura.",
+        "Está en el medio de la gama: más barato que los modelos grandes (cuesta casi la mitad que su versión anterior) pero bastante más capaz que los chicos. Es como contratar a un buen asistente administrativo en vez de a un gerente.",
+        "Qué cambia para una empresa: muchas tareas aburridas viven en sistemas viejos que no tienen forma de conectarse con nada. Si un modelo puede operar la pantalla como una persona, esas tareas se pueden automatizar sin rehacer el sistema.",
+        "Nuestra opinión: no es una revolución, es una mejora útil y más barata. Y justo en tareas repetitivas, donde el costo por tarea es lo que define si automatizar vale la pena, el precio importa más que el ranking.",
+        "Si tenés tareas repetitivas en sistemas viejos y querés ver si se pueden automatizar con IA, en Doppler te ayudamos a implementarlo. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": 28,
+      "status": "pending",
+      "created_at": "2026-10-28T12:19:49.669Z"
+    },
+    {
+      "id": "2026-10-28-emudhra-certificados",
+      "type": "a",
+      "topic": "eMudhra: claves de certificados intermedios comprometidas, actualizar software",
+      "source_url": "https://simonwillison.net/2026/Oct/20/emudhra-certificates/",
+      "thread": [
+        "Se filtraron las claves de ocho certificados de una autoridad que los navegadores consideran confiable. Si en tu empresa hay software sin actualizar, ahora tiene un agujero. Qué pasó, en simple 🧵",
+        "Cuando entrás a un sitio con candadito, tu navegador confía porque una 'autoridad certificante' firmó que ese sitio es quien dice ser. Es como el escribano que certifica una firma.",
+        "Ahora se robaron las claves de ocho de esos sellos de eMudhra. Con eso, alguien podría armar un sitio falso con candadito válido, o espiar una conexión sin que nadie lo note.",
+        "La solución es actualizar: los navegadores, los sistemas operativos y también programas internos que traen su propia lista de sellos confiables. Python, por ejemplo, ya publicó versiones nuevas de sus herramientas.",
+        "Lo traicionero está en lo que nadie mira: un sistema viejo, un servidor olvidado, una integración armada hace años. Ahí la lista de sellos queda desactualizada y nadie se entera.",
+        "Si no sabés qué software de tu empresa quedó sin actualizar, en Doppler te ayudamos a revisarlo y ordenarlo. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": 30,
+      "status": "pending",
+      "created_at": "2026-10-28T12:19:49.669Z"
     }
   ]
 }
