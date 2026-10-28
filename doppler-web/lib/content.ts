@@ -27,6 +27,7 @@ export const clientLogos: ClientLogo[] = [
 ];
 
 export type ServiceItem = {
+  href: string;
   icon: "code" | "bot" | "lightbulb";
   title: string;
   description: string;
@@ -34,18 +35,21 @@ export type ServiceItem = {
 
 export const services: ServiceItem[] = [
   {
+    href: "/servicios/desarrollo-de-software",
     icon: "code",
     title: "Desarrollo de Software",
     description:
       "Aplicaciones web, mobile y sistemas a medida, construidos con foco en escalabilidad y velocidad de entrega.",
   },
   {
+    href: "/servicios/ia-y-automatizaciones",
     icon: "bot",
     title: "IA & Automatizaciones",
     description:
       "Diseñamos e implementamos soluciones de inteligencia artificial que automatizan procesos y reducen costos operativos.",
   },
   {
+    href: "/servicios/consultoria-tech",
     icon: "lightbulb",
     title: "Consultoría Tech",
     description:
@@ -166,6 +170,7 @@ export const footerLinks: NavLink[] = [
   { label: "IA para Empresas", href: "#ia" },
   { label: "Clientes", href: "#clientes" },
   { label: "Contacto", href: "#contacto" },
+  { label: "Privacidad", href: "/privacidad" },
 ];
 
 export const socialLinks: NavLink[] = [{ label: "X", href: "https://x.com/dopplerla" }];

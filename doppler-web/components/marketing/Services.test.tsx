@@ -9,6 +9,7 @@ describe("Services", () => {
     services.forEach((service) => {
       expect(screen.getByText(service.title)).toBeInTheDocument();
       expect(screen.getByText(service.description)).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: `Ver más sobre ${service.title}` })).toHaveAttribute("href", service.href);
     });
   });
 });
