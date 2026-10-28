@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Code2, Bot, Lightbulb } from "lucide-react";
 import { services, type ServiceItem } from "@/lib/content";
 
@@ -25,6 +26,13 @@ export default function Services() {
                 <Icon className="h-8 w-8 text-accent" />
                 <h3 className="mt-4 text-xl font-semibold text-foreground">{service.title}</h3>
                 <p className="mt-3 text-sm text-muted">{service.description}</p>
+                <Link
+                  href={service.href}
+                  aria-label={`Ver más sobre ${service.title}`}
+                  className="mt-4 inline-block text-sm font-semibold text-accent underline-offset-4 hover:underline"
+                >
+                  Ver más
+                </Link>
               </div>
             );
           })}

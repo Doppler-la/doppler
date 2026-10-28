@@ -12,4 +12,10 @@ describe("Header", () => {
     expect(screen.getByRole("link", { name: "Contacto" })).toHaveAttribute("href", "#contacto");
     expect(screen.getByRole("link", { name: "Hablemos" })).toHaveAttribute("href", "#contacto");
   });
+
+  it("points anchors to the home when rendered on an inner page", () => {
+    render(<Header basePath="/" />);
+    expect(screen.getByRole("link", { name: "Servicios" })).toHaveAttribute("href", "/#servicios");
+    expect(screen.getByRole("link", { name: "Hablemos" })).toHaveAttribute("href", "/#contacto");
+  });
 });

@@ -4,7 +4,7 @@ import { getWhatsAppNumber } from "@/lib/site";
 import DopplerMark from "./DopplerMark";
 import WhatsAppLink from "./WhatsAppLink";
 
-export default function Footer() {
+export default function Footer({ basePath = "" }: { basePath?: string }) {
   const year = new Date().getFullYear();
 
   return (
@@ -18,7 +18,7 @@ export default function Footer() {
           {footerLinks.map((link) => (
             <Link
               key={link.href}
-              href={link.href}
+              href={link.href.startsWith("#") ? `${basePath}${link.href}` : link.href}
               className="text-sm text-muted transition-colors hover:text-foreground"
             >
               {link.label}
