@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import ServicePage, { generateMetadata, generateStaticParams } from "./page";
 import { servicePages } from "@/lib/servicePages";
+import { testimonials } from "@/lib/content";
 
 vi.mock("next/navigation", () => ({
   notFound: () => {
@@ -31,5 +32,22 @@ describe("ServicePage", () => {
 
   it("returns not found for an unknown slug", () => {
     expect(() => render(<ServicePage params={{ slug: "nope" }} />)).toThrow("NEXT_NOT_FOUND");
+  });
+
+  it.each(servicePages)("keeps enough visible content to work as a paid landing: $slug", (page) => {
+    const { container } = render(<ServicePage params={{ slug: page.slug }} />);
+    container.querySelectorAll("script").forEach((node) => node.remove());
+    const words = (container.textContent ?? "").split(/\s+/).filter(Boolean).length;
+    expect(words).toBeGreaterThanOrEqual(350);
+  });
+
+  it.each(servicePages)("only quotes testimonials that already exist on the site: $slug", (page) => {
+    const { container } = render(<ServicePage params={{ slug: page.slug }} />);
+    page.testimonialCompanies.forEach((company) => {
+      expect(testimonials.some((t) => t.company === company), company).toBe(true);
+    });
+    testimonials
+      .filter((t) => page.testimonialCompanies.includes(t.company))
+      .forEach((t) => expect(container.textContent).toContain(t.quote));
   });
 });
