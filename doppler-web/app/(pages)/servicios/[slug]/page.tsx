@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { aiSection } from "@/lib/content";
+import { aiSection, clientLogos, faqItems, testimonials } from "@/lib/content";
 import { siteUrl } from "@/lib/site";
 import { socialMetadata } from "@/lib/metadata";
-import { getServicePage, servicePages } from "@/lib/servicePages";
+import { getServicePage, servicePages, whyDoppler, workProcess } from "@/lib/servicePages";
 import LeadChat from "@/components/marketing/LeadChat";
 
 export const dynamicParams = false;
@@ -51,6 +51,10 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
     },
   ];
   const others = servicePages.filter((other) => other.slug !== page.slug);
+  const pageTestimonials = testimonials.filter((t) => page.testimonialCompanies.includes(t.company));
+  // Preguntas generales de la home que no repiten las propias de cada página.
+  const generalQuestions = ["¿A qué tipo de clientes atienden?", "¿Qué los diferencia de otras software factories?"];
+  const faqs = [...page.faqs, ...faqItems.filter((faq) => generalQuestions.includes(faq.question))];
 
   return (
     <main>
@@ -117,11 +121,66 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
         </section>
       )}
 
+      {page.slug !== "ia-y-automatizaciones" && (
+        <section className="bg-surface px-6 py-20">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-2xl font-bold text-foreground md:text-3xl">Cómo trabajamos</h2>
+            <ol className="mt-10 grid gap-6 sm:grid-cols-3">
+              {workProcess.map((step, index) => (
+                <li key={step.title} className="rounded-lg border border-primary/40 bg-background p-6">
+                  <span className="text-sm font-semibold text-accent">Paso {index + 1}</span>
+                  <h3 className="mt-2 text-lg font-semibold text-foreground">{step.title}</h3>
+                  <p className="mt-2 text-sm text-muted">{step.description}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-2xl font-bold text-foreground md:text-3xl">Por qué Doppler</h2>
+          <div className="mt-10 grid gap-6 sm:grid-cols-3">
+            {whyDoppler.map((item) => (
+              <div key={item.title} className="rounded-lg border border-primary/40 bg-surface p-6">
+                <h3 className="text-lg font-semibold text-foreground">{item.title}</h3>
+                <p className="mt-2 text-sm text-muted">{item.description}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-8 text-sm text-muted">
+            Empresas que confiaron en nosotros: {clientLogos.map((logo) => logo.name).join(", ")}.
+          </p>
+        </div>
+      </section>
+
+      {pageTestimonials.length > 0 && (
+        <section className="bg-surface px-6 py-20">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-2xl font-bold text-foreground md:text-3xl">Lo que dicen de nosotros</h2>
+            <div className="mt-10 grid gap-6 md:grid-cols-2">
+              {pageTestimonials.map((t) => (
+                <blockquote key={t.quote} className="rounded-lg border border-primary/40 bg-background p-6">
+                  <p className="text-sm italic text-muted">&ldquo;{t.quote}&rdquo;</p>
+                  <footer className="mt-4 text-sm font-semibold text-foreground">
+                    {t.author}
+                    <span className="block text-xs font-normal text-muted">
+                      {t.role} · {t.company}
+                    </span>
+                  </footer>
+                </blockquote>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="px-6 py-20">
         <div className="mx-auto max-w-3xl">
           <h2 className="text-2xl font-bold text-foreground md:text-3xl">Preguntas frecuentes</h2>
           <dl className="mt-8 space-y-6">
-            {page.faqs.map((faq) => (
+            {faqs.map((faq) => (
               <div key={faq.question}>
                 <dt className="font-medium text-foreground">{faq.question}</dt>
                 <dd className="mt-2 text-muted">{faq.answer}</dd>

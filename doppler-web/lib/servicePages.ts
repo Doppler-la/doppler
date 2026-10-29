@@ -10,12 +10,47 @@ export type ServicePage = {
   includes: { title: string; description: string }[];
   forWho: string[];
   faqs: FaqItem[];
+  testimonialCompanies: string[];
 };
+
+// Proceso y diferenciales tomados de las preguntas frecuentes de la home.
+export const workProcess = [
+  {
+    title: "Reunión de diagnóstico",
+    description: "Una primera reunión sin costo para entender tu necesidad.",
+  },
+  {
+    title: "Alcance y plan",
+    description: "Definimos qué se construye, en qué orden y cómo se mide.",
+  },
+  {
+    title: "Ciclos cortos",
+    description: "Trabajamos con entregas frecuentes para que veas avances reales.",
+  },
+];
+
+export const whyDoppler = [
+  {
+    title: "Software tradicional + IA aplicada",
+    description:
+      "Combinamos desarrollo de software tradicional con foco fuerte en IA aplicada a automatización.",
+  },
+  {
+    title: "Equipos chicos, comunicación directa",
+    description: "Hablás con quienes construyen tu proyecto, sin capas de intermediarios.",
+  },
+  {
+    title: "Para cualquier industria",
+    description:
+      "Trabajamos con startups, pymes y empresas de cualquier industria que necesiten software o automatizaciones con IA.",
+  },
+];
 
 // Contenido basado en lo que ya dice el sitio (servicios, sección de IA y FAQ). Sin cifras ni clientes inventados.
 export const servicePages: ServicePage[] = [
   {
     slug: "desarrollo-de-software",
+    testimonialCompanies: ["Pahema", "Kuyén"],
     name: "Desarrollo de Software",
     metaTitle: "Desarrollo de software a medida para pymes y empresas | Doppler",
     metaDescription:
@@ -66,6 +101,7 @@ export const servicePages: ServicePage[] = [
   },
   {
     slug: "ia-y-automatizaciones",
+    testimonialCompanies: ["Sintectur"],
     name: "IA & Automatizaciones",
     metaTitle: "IA y automatización de procesos para empresas | Doppler",
     metaDescription:
@@ -116,6 +152,7 @@ export const servicePages: ServicePage[] = [
   },
   {
     slug: "consultoria-tech",
+    testimonialCompanies: ["Kuyén"],
     name: "Consultoría Tech",
     metaTitle: "Consultoría tecnológica y estrategia digital | Doppler",
     metaDescription:
