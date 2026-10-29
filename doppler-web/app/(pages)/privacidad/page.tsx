@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
+import { socialMetadata } from "@/lib/metadata";
+
+const title = "Política de privacidad | Doppler";
+const description = "Qué datos recopila Doppler en www.doppler.la, para qué los usa y cómo ejercer tus derechos.";
 
 export const metadata: Metadata = {
-  title: "Política de privacidad | Doppler",
-  description: "Qué datos recopila Doppler en www.doppler.la, para qué los usa y cómo ejercer tus derechos.",
+  title,
+  description,
   alternates: { canonical: "/privacidad" },
+  ...socialMetadata({ title, description, path: "/privacidad" }),
 };
 
 const sections: { title: string; body: string[] }[] = [
