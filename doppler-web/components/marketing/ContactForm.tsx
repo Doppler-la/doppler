@@ -79,7 +79,7 @@ export default function ContactForm() {
         {status === "loading" ? "Enviando..." : "Enviar"}
       </button>
       {status === "success" && (
-        <p className="text-sm text-accent">¡Gracias! Te vamos a contactar pronto.</p>
+        <p className="text-sm text-accent-soft">¡Gracias! Te vamos a contactar pronto.</p>
       )}
       {status === "error" && (
         <p className="text-sm text-danger">

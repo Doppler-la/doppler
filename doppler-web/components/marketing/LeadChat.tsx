@@ -124,7 +124,7 @@ export default function LeadChat() {
           <p className="mt-3 text-sm text-danger">{chatContent.errorMessage}</p>
         )}
         {status === "closed" && (
-          <p className="mt-3 text-sm text-accent">{chatContent.closedNotice}</p>
+          <p className="mt-3 text-sm text-accent-soft">{chatContent.closedNotice}</p>
         )}
 
         <form onSubmit={handleSubmit} className="mt-4 flex items-end gap-3">
@@ -159,7 +159,7 @@ export default function LeadChat() {
 
         {brief && (
           <div className="mt-6 rounded-md border border-accent/40 bg-background p-4">
-            <p className="text-sm font-semibold text-accent">{chatContent.previewTitle}</p>
+            <p className="text-sm font-semibold text-accent-soft">{chatContent.previewTitle}</p>
             <p className="mt-2 text-sm font-semibold text-foreground">{brief.subject}</p>
             <pre className="mt-2 whitespace-pre-wrap text-sm text-muted">{brief.text}</pre>
           </div>
