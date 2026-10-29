@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { aiSection } from "@/lib/content";
 import { siteUrl } from "@/lib/site";
+import { socialMetadata } from "@/lib/metadata";
 import { getServicePage, servicePages } from "@/lib/servicePages";
 import LeadChat from "@/components/marketing/LeadChat";
 
@@ -20,8 +21,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     title: page.metaTitle,
     description: page.metaDescription,
     alternates: { canonical: path },
-    openGraph: { title: page.metaTitle, description: page.metaDescription, url: path, type: "website" },
-    twitter: { title: page.metaTitle, description: page.metaDescription },
+    ...socialMetadata({ title: page.metaTitle, description: page.metaDescription, path }),
   };
 }
 

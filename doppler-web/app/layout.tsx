@@ -4,6 +4,7 @@ import "./globals.css";
 import Analytics from "@/components/Analytics";
 import { socialLinks } from "@/lib/content";
 import { siteUrl } from "@/lib/site";
+import { socialMetadata } from "@/lib/metadata";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,21 +27,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    locale: "es_AR",
-    siteName: "Doppler",
-    title,
-    description,
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Doppler" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@dopplerla",
-    title,
-    description,
-    images: ["/og-image.png"],
-  },
+  ...socialMetadata({ title, description, path: "/" }),
 };
 
 const organizationJsonLd = {
