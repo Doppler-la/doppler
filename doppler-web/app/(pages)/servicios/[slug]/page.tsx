@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { aiSection, clientLogos, faqItems, testimonials } from "@/lib/content";
 import { siteUrl } from "@/lib/site";
+import { organizationId } from "@/lib/organization";
 import { socialMetadata } from "@/lib/metadata";
 import { getServicePage, servicePages, whyDoppler, workProcess } from "@/lib/servicePages";
 import LeadChat from "@/components/marketing/LeadChat";
@@ -39,7 +40,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       url,
       serviceType: page.name,
       areaServed: "Latin America",
-      provider: { "@type": "ProfessionalService", name: "Doppler", url: siteUrl },
+      provider: { "@type": "ProfessionalService", "@id": organizationId, name: "Doppler", url: siteUrl },
     },
     {
       "@context": "https://schema.org",

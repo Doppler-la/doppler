@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
-import { socialLinks } from "@/lib/content";
 import { siteUrl } from "@/lib/site";
 import { socialMetadata } from "@/lib/metadata";
 
@@ -30,27 +29,10 @@ export const metadata: Metadata = {
   ...socialMetadata({ title, description, path: "/" }),
 };
 
-const organizationJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: "Doppler",
-  description,
-  url: siteUrl,
-  logo: `${siteUrl}/doppler-logo.png`,
-  image: `${siteUrl}/og-image.png`,
-  sameAs: socialLinks.map((link) => link.href),
-  areaServed: "Latin America",
-  knowsLanguage: "es",
-};
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-        />
         {children}
         <Analytics />
       </body>

@@ -21,4 +21,12 @@ describe("Landing page", () => {
     expect(screen.getByText(faqItems[0].question)).toBeInTheDocument();
     expect(screen.getByText("Hablemos de tu proyecto")).toBeInTheDocument();
   });
+
+  it("publishes the Organization JSON-LD with a stable @id", () => {
+    const { container } = render(<Page />);
+    const blocks = Array.from(container.querySelectorAll('script[type="application/ld+json"]')).map((n) =>
+      JSON.parse(n.textContent ?? "{}")
+    );
+    expect(blocks.some((b) => b["@type"] === "ProfessionalService" && b["@id"])).toBe(true);
+  });
 });
