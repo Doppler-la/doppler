@@ -3,22 +3,6 @@
   "inbox": [],
   "drafts": [
     {
-      "id": "2026-10-21-obituario-programar",
-      "type": "a",
-      "topic": "Obituario para programar: agentes de código y el cambio del oficio",
-      "source_url": "https://simonwillison.net/2026/Oct/19/my-obituary-for-programming/",
-      "thread": [
-        "Un programador escribió un 'obituario' de su oficio y le pegó fuerte a mucha gente del rubro. No es drama: dice algo que le pasa a cualquiera que trabaje con tecnología hoy 🧵",
-        "Su idea: programar era un trabajo hermoso porque eran acertijos que solo vos sabías resolver. Te traían un problema, lo resolvías a tu manera, ponías los tiempos y decías qué se podía y qué no. Los asistentes de IA le sacan parte de ese placer.",
-        "Lo entendemos, porque lo vivimos desde adentro. Pero desde el otro lado, el de quien necesita el software, pasa algo distinto: lo que antes tardaba meses y costaba una fortuna hoy se prueba en días. Es como pasar de cavar con pala a tener una retroexcavadora.",
-        "Nuestra opinión: el oficio no muere, cambia de lugar. Menos tipear, más entender qué problema real tiene el negocio y revisar bien lo que la máquina propone. Para una empresa, la ventaja es de quien aprende a pedir bien, no de quien tiene más horas de tipeo.",
-        "Si querés aprovechar este cambio en tu empresa sin perderte en el ruido, en Doppler te ayudamos a definir qué automatizar y a implementarlo. Contanos tu caso en www.doppler.la"
-      ],
-      "telegram_message_id": 7,
-      "status": "pending",
-      "created_at": "2026-10-21T14:57:21.207Z"
-    },
-    {
       "id": "2026-10-23-agent-skills-fundacion",
       "type": "a",
       "topic": "Agent Skills donadas a la Agentic AI Foundation",
