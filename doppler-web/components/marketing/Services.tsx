@@ -29,7 +29,7 @@ export default function Services() {
                 <Link
                   href={service.href}
                   aria-label={`Ver más sobre ${service.title}`}
-                  className="mt-4 inline-block text-sm font-semibold text-accent underline-offset-4 hover:underline"
+                  className="mt-4 inline-block text-sm font-semibold text-accent-soft underline-offset-4 hover:underline"
                 >
                   Ver más
                 </Link>

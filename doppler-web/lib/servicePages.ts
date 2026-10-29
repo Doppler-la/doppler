@@ -11,6 +11,8 @@ export type ServicePage = {
   forWho: string[];
   faqs: FaqItem[];
   testimonialCompanies: string[];
+  // Fecha (YYYY-MM-DD) de la última modificación del contenido. Actualizar al editar la página.
+  updatedAt: string;
 };
 
 // Proceso y diferenciales tomados de las preguntas frecuentes de la home.
@@ -50,6 +52,7 @@ export const whyDoppler = [
 export const servicePages: ServicePage[] = [
   {
     slug: "desarrollo-de-software",
+    updatedAt: "2026-10-29",
     testimonialCompanies: ["Pahema", "Kuyén"],
     name: "Desarrollo de Software",
     metaTitle: "Desarrollo de software a medida para pymes y empresas | Doppler",
@@ -101,6 +104,7 @@ export const servicePages: ServicePage[] = [
   },
   {
     slug: "ia-y-automatizaciones",
+    updatedAt: "2026-10-29",
     testimonialCompanies: ["Sintectur"],
     name: "IA & Automatizaciones",
     metaTitle: "IA y automatización de procesos para empresas | Doppler",
@@ -152,6 +156,7 @@ export const servicePages: ServicePage[] = [
   },
   {
     slug: "consultoria-tech",
+    updatedAt: "2026-10-29",
     testimonialCompanies: ["Kuyén"],
     name: "Consultoría Tech",
     metaTitle: "Consultoría tecnológica y estrategia digital | Doppler",

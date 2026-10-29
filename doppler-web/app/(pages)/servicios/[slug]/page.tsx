@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { aiSection, clientLogos, faqItems, testimonials } from "@/lib/content";
 import { siteUrl } from "@/lib/site";
+import { organizationId } from "@/lib/organization";
 import { socialMetadata } from "@/lib/metadata";
 import { getServicePage, servicePages, whyDoppler, workProcess } from "@/lib/servicePages";
 import LeadChat from "@/components/marketing/LeadChat";
@@ -39,7 +40,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       url,
       serviceType: page.name,
       areaServed: "Latin America",
-      provider: { "@type": "ProfessionalService", name: "Doppler", url: siteUrl },
+      provider: { "@type": "ProfessionalService", "@id": organizationId, name: "Doppler", url: siteUrl },
     },
     {
       "@context": "https://schema.org",
@@ -111,7 +112,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             <ol className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {aiSection.methodology.map((step) => (
                 <li key={step.step} className="rounded-lg border border-primary/40 bg-background p-6">
-                  <span className="text-sm font-semibold text-accent">Paso {step.step}</span>
+                  <span className="text-sm font-semibold text-accent-soft">Paso {step.step}</span>
                   <h3 className="mt-2 text-lg font-semibold text-foreground">{step.title}</h3>
                   <p className="mt-2 text-sm text-muted">{step.description}</p>
                 </li>
@@ -128,7 +129,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             <ol className="mt-10 grid gap-6 sm:grid-cols-3">
               {workProcess.map((step, index) => (
                 <li key={step.title} className="rounded-lg border border-primary/40 bg-background p-6">
-                  <span className="text-sm font-semibold text-accent">Paso {index + 1}</span>
+                  <span className="text-sm font-semibold text-accent-soft">Paso {index + 1}</span>
                   <h3 className="mt-2 text-lg font-semibold text-foreground">{step.title}</h3>
                   <p className="mt-2 text-sm text-muted">{step.description}</p>
                 </li>
@@ -198,7 +199,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
               <li key={other.slug}>
                 <Link
                   href={`/servicios/${other.slug}`}
-                  className="text-accent underline-offset-4 hover:underline"
+                  className="text-accent-soft underline-offset-4 hover:underline"
                 >
                   {other.name}
                 </Link>

@@ -18,7 +18,7 @@ export default function FinalCTA() {
         <WhatsAppLink
           number={getWhatsAppNumber()}
           label="Escribinos por WhatsApp"
-          className="mt-4 block text-sm font-semibold text-accent underline-offset-4 hover:underline"
+          className="mt-4 block text-sm font-semibold text-accent-soft underline-offset-4 hover:underline"
         />
       </div>
     </section>

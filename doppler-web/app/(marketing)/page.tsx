@@ -6,10 +6,12 @@ import Testimonials from "@/components/marketing/Testimonials";
 import FAQ from "@/components/marketing/FAQ";
 import FinalCTA from "@/components/marketing/FinalCTA";
 import LeadChat from "@/components/marketing/LeadChat";
+import { organizationJsonLd } from "@/lib/organization";
 
 export default function Page() {
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
       <Hero />
       <ClientLogos />
       <Services />

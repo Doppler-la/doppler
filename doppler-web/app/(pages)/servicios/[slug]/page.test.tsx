@@ -50,4 +50,10 @@ describe("ServicePage", () => {
       .filter((t) => page.testimonialCompanies.includes(t.company))
       .forEach((t) => expect(container.textContent).toContain(t.quote));
   });
+
+  it.each(servicePages)("references the organization by @id instead of repeating it: $slug", (page) => {
+    const { container } = render(<ServicePage params={{ slug: page.slug }} />);
+    const ld = JSON.parse(container.querySelector('script[type="application/ld+json"]')!.textContent!);
+    expect(ld[0].provider["@id"]).toBe("https://www.doppler.la/#organization");
+  });
 });
