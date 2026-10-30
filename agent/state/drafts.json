@@ -68,6 +68,40 @@
       "telegram_message_id": 30,
       "status": "pending",
       "created_at": "2026-10-28T12:19:49.669Z"
+    },
+    {
+      "id": "2026-10-30-octoverse-2026",
+      "type": "a",
+      "topic": "GitHub Octoverse 2026: commits y pull requests se triplican por la IA",
+      "source_url": "https://simonwillison.net/2026/Oct/28/github-octoverse-2026/",
+      "thread": [
+        "GitHub publicó su reporte anual y hay un número que cuesta creer: en menos de un año, la cantidad de cambios de código aprobados por mes se triplicó. Lo que está pasando con la IA ya se ve en las estadísticas 🧵",
+        "Primero, el contexto: GitHub es el lugar donde casi todo el mundo guarda el código de sus programas. Cada vez que alguien propone un cambio y otro lo aprueba, eso se cuenta como un 'pull request'. Es como el visto bueno de un cambio en un documento compartido.",
+        "Los números de 2026: 220 millones de cambios aprobados por mes, 7.380 millones de 'guardados' de código por mes, y 30 millones de proyectos nuevos por mes, el doble que antes. La mayor parte del salto fue en la segunda mitad del año.",
+        "Qué significa para quien maneja un equipo: el costo de probar una idea de software bajó muchísimo. Lo que antes pedía semanas de desarrollo hoy se prototipa en días. La competencia también lo sabe.",
+        "Nuestra opinión: más código no es lo mismo que mejor producto. Lo escaso ahora es saber qué construir y mantenerlo andando. Escribir código dejó de ser el cuello de botella.",
+        "Si querés aprovechar esta velocidad en tu empresa, sin que se convierta en desorden, en Doppler te ayudamos a implementarlo. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": 34,
+      "status": "pending",
+      "created_at": "2026-10-30T12:09:54.030Z"
+    },
+    {
+      "id": "2026-10-30-creditos-api-suscripciones",
+      "type": "a",
+      "topic": "OpenAI y Anthropic regalan créditos de API a suscriptores de planes de $100+",
+      "source_url": "https://simonwillison.net/2026/Oct/29/api-credits/",
+      "thread": [
+        "Si pagás un plan de IA para tu equipo, probablemente te estén regalando algo que no sabías: tanto OpenAI como Anthropic ahora devuelven créditos para construir cosas propias. Te lo explicamos 🧵",
+        "Hay dos formas de usar estas IA. Una es el chat, donde le escribís vos. La otra es la 'API', que es la puerta para que tus sistemas hablen con la IA solos: responder consultas, ordenar documentos, armar reportes. Se paga aparte.",
+        "Anthropic lo anunció este mes: los planes de 100, 200 y 500 dólares mensuales incluyen la misma cantidad en créditos para la API. OpenAI acaba de lanzar prácticamente lo mismo. Es como si tu abono de gimnasio incluyera créditos para armar tu propia rutina.",
+        "Qué cambia: el costo de probar una automatización con IA propia baja a casi cero para quien ya tiene la suscripción. Podés testear una idea en tu empresa sin pedir un presupuesto nuevo.",
+        "Ojo: son créditos que vencen, así que conviene tener una idea lista antes de que se pierdan. Es plata que ya pagaste.",
+        "Si ya tenés estos créditos y no sabés en qué usarlos, en Doppler te ayudamos a convertirlos en una automatización que funcione. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": 36,
+      "status": "pending",
+      "created_at": "2026-10-30T12:09:54.030Z"
     }
   ]
 }
