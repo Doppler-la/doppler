@@ -1,5 +1,5 @@
 {
-  "last_telegram_update_id": 259905326,
+  "last_telegram_update_id": 259905327,
   "inbox": [],
   "drafts": [
     {
@@ -102,6 +102,23 @@
       "telegram_message_id": 36,
       "status": "pending",
       "created_at": "2026-10-30T12:09:54.030Z"
+    },
+    {
+      "id": "2026-11-01-load-balancer-vs-api-gateway",
+      "type": "a",
+      "topic": "Load balancer vs API gateway: diferencia explicada para no técnicos",
+      "source_url": "https://x.com/santtiagom_/status/2116522472216338696",
+      "thread": [
+        "Si alguna vez escuchaste 'load balancer' y 'API gateway' y pensaste que son lo mismo, no sos el único: es una pregunta clásica de entrevistas técnicas. Las dos cosas reciben tráfico y lo reparten, pero sirven para cosas distintas 🧵",
+        "Load balancer: imaginate un local con una sola caja y una fila enorme. Abrís varias cajas iguales y alguien en la puerta manda a cada cliente a la que esté más libre. Todas hacen lo mismo; el objetivo es que nada se sature.",
+        "API gateway: es la recepción de un edificio de oficinas. Pregunta quién sos, chequea que tengas permiso, te dice a qué piso ir y anota quién entró. No reparte carga: decide qué se te permite y a dónde vas.",
+        "Por eso muchas veces conviven: el gateway controla el acceso y manda cada pedido al servicio correcto, y detrás hay un load balancer que reparte entre las copias de ese servicio.",
+        "Para quien maneja un equipo o una empresa: el balanceador evita que el sistema se caiga cuando hay mucho uso; el gateway ordena quién entra y qué puede hacer. Confundirlos lleva a decidir mal qué hace falta pagar y armar.",
+        "Si querés ordenar la arquitectura de tu sistema o armar algo que aguante crecer, en Doppler te ayudamos a diseñarlo e implementarlo. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": 39,
+      "status": "pending",
+      "created_at": "2026-11-01T12:05:07.862Z"
     }
   ]
 }
