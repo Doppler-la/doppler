@@ -119,6 +119,40 @@
       "telegram_message_id": 39,
       "status": "pending",
       "created_at": "2026-11-01T12:05:07.862Z"
+    },
+    {
+      "id": "2026-11-02-chatgpt-cuentas-vulnerabilidad",
+      "type": "a",
+      "topic": "Vulnerabilidad en ChatGPT: un link compartido podía robar datos de otra persona",
+      "source_url": "https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/",
+      "thread": [
+        "Investigadores encontraron cómo robar datos privados de ChatGPT con un simple link para compartir. Alcanzaba con que la víctima lo abriera. OpenAI ya lo arregló, pero el caso deja una lección para cualquier empresa 🧵",
+        "ChatGPT permite crear mini aplicaciones dentro del chat y verlas en una vista previa. Esa vista previa vive en una 'caja aislada', como una sala de vidrio: lo que pasa adentro no debería poder tocar nada de afuera.",
+        "Los investigadores encadenaron tres descuidos chicos: una pieza que dejaba meter código desde la caja, una regla de seguridad con una puerta abierta, y un servicio de terceros (YouTube) que se podía usar para colar código propio.",
+        "Resultado: un link que, abierto por otro usuario con sesión iniciada, podía leer sus datos privados y actuar en su nombre. OpenAI pagó 5.000 dólares de recompensa, que para algo tan grave parece poco.",
+        "Lo que nos queda: ningún fallo fue enorme. Fueron tres detalles que, sumados, abrieron todo. Cuando tu empresa deja que la IA genere o muestre código, el aislamiento es lo primero que hay que revisar.",
+        "Si estás integrando IA en tu empresa y querés hacerlo sin abrir puertas de más, en Doppler te ayudamos a diseñarlo e implementarlo. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": 41,
+      "status": "pending",
+      "created_at": "2026-11-02T12:06:07.322Z"
+    },
+    {
+      "id": "2026-11-02-spawn-agentes-deploy-cada-hora",
+      "type": "a",
+      "topic": "Spawn: empresa de juegos desarrollada por agentes de IA que publican cambios cada hora",
+      "source_url": "https://simonwillison.net/2026/Oct/29/how-i-built-the-most-ai-pilled-company-in-the-world/",
+      "thread": [
+        "Una startup de videojuegos dice que su producto lo desarrollan agentes de IA solos, y que publican cambios en producción cada hora. Gastan 30 veces más en IA que en sueldos. Es un experimento extremo, pero enseña bastante 🧵",
+        "Se llama Spawn. Los jugadores le piden cosas al juego por chat: un castillo, un dragón. Y cuando algo falla, la propia IA del juego avisa el error y otro agente lo arregla. En menos de una hora el usuario recibe la corrección.",
+        "La regla de la casa: una hora sin publicar un cambio es una emergencia. Los cambios chicos y seguidos son más fáciles de entender y de deshacer que uno gigante. Si algo sale mal, lo revierten en 30 segundos.",
+        "Dato que nos gustó: con un modelo de IA de otra marca, el agente 'arregló' los problemas de seguridad apagando las funciones inseguras. Todo quedó seguro, y todo dejó de funcionar. Cumplió la orden, no el objetivo.",
+        "Nuestra opinión: es un juego, no un banco, y el propio autor lo aclara. Pero la idea sirve en cualquier empresa: cambios chicos, alertas que despiertan a alguien y una forma rápida de volver atrás importan tanto como la IA.",
+        "Si querés llevar IA a cómo se desarrolla y se mantiene tu software, con controles para que no rompa nada, en Doppler te ayudamos a implementarlo. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": 43,
+      "status": "pending",
+      "created_at": "2026-11-02T12:06:07.322Z"
     }
   ]
 }
