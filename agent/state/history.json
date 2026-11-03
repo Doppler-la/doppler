@@ -27,6 +27,18 @@
       "topic": "Agent Skills donadas a la Agentic AI Foundation",
       "source_url": "https://simonwillison.net/2026/Oct/22/donating-agent-skills/",
       "rejected_at": "2026-10-30T12:09:01.800Z"
+    },
+    {
+      "id": "2026-10-26-kimi-k31-modelo-abierto",
+      "topic": "Kimi K3.1 Pro: modelo casi abierto que iguala a los grandes a mitad de precio",
+      "source_url": "https://simonwillison.net/2026/Oct/23/kimi-k31-pro/",
+      "rejected_at": "2026-11-03T12:05:29.824Z"
+    },
+    {
+      "id": "2026-10-26-kinesiologos-rutinas",
+      "topic": "Caso Doppler: plataforma para kinesiólogos con rutinas de ejercicios automáticas",
+      "source_url": null,
+      "rejected_at": "2026-11-03T12:05:29.824Z"
     }
   ]
 }
