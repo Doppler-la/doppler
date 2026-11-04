@@ -120,6 +120,40 @@
       "telegram_message_id": 43,
       "status": "pending",
       "created_at": "2026-11-02T12:06:07.322Z"
+    },
+    {
+      "id": "2026-11-04-censo-adopcion-ia",
+      "type": "a",
+      "topic": "Censo de EE.UU.: adopción de IA en empresas grandes pasó de ~12% a ~40% (con cambio de pregunta)",
+      "source_url": "https://simonwillison.net/2026/Nov/2/census-bureau-super-intelligence/",
+      "thread": [
+        "¿Cuántas empresas usan IA de verdad? El censo de EE.UU. lo mide cada dos semanas, y los números de las grandes pasaron de ~12% a ~40% en un año. Pero hay una trampa en la comparación 🧵",
+        "La oficina del censo le pregunta a unas 200.000 empresas si usaron IA en las últimas dos semanas. Entre las de más de 250 empleados, en septiembre de 2025 contestaba que sí alrededor del 12%. Hoy, cerca del 40%.",
+        "La trampa: en noviembre de 2025 cambiaron la pregunta. Antes era 'usar IA para producir bienes o servicios'. Ahora es 'usar IA en cualquier función del negocio'. Es como pasar de preguntar '¿cocinás?' a '¿alguna vez entraste a la cocina?'.",
+        "Por eso los dos números no se pueden comparar de manera directa. Parte del salto es adopción real y parte es que ahora cuenta mucho más: resumir un mail, armar una planilla, redactar un texto.",
+        "Nuestra lectura: usar IA 'en algún lado' ya es lo normal, y eso dejó de ser ventaja. La diferencia está en quién la mete en un proceso concreto (facturación, atención, reportes) y mide cuánto tiempo ahorra.",
+        "Si en tu empresa la IA se usa 'por ahí' pero no está atada a ningún proceso, en Doppler te ayudamos a llevarla a donde se note. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": 47,
+      "status": "pending",
+      "created_at": "2026-11-04T12:05:04.909Z"
+    },
+    {
+      "id": "2026-11-04-sonido-aviones-ubicacion",
+      "type": "a",
+      "topic": "OSINT: el ruido de aviones de fondo en un video revela dónde se grabó",
+      "source_url": "https://simonwillison.net/2026/Nov/3/a-sound-that-leaks-your-exact-location/",
+      "thread": [
+        "Un investigador demostró que el ruido de fondo de un video, ese que ni notás, puede delatar exactamente dónde se grabó. Y el truco usa el efecto Doppler, como nosotros 🧵",
+        "Cuando pasa un avión, su sonido se vuelve más agudo al acercarse y más grave al alejarse. Esa curva es única según la velocidad y la distancia a la que pasa. Es como una huella digital del sonido.",
+        "Hoy los vuelos publican su posición en tiempo real en datos abiertos. Entonces se compara la huella de los aviones del video con los vuelos registrados ese momento, y listo: solo hay un lugar donde esa combinación cuadra.",
+        "Nadie hackeó nada ni usó datos secretos. Se cruzaron dos cosas públicas que nunca pensamos juntas: el audio de un video y el registro de vuelos.",
+        "Para una empresa la lección es práctica: un video de un cliente, un reel de la oficina o una demo grabada desde un lugar sensible puede decir más de lo que mostrás. Vale la pena mirar qué se publica antes de subirlo.",
+        "Si querés revisar qué información se escapa de tus procesos y herramientas, en Doppler te ayudamos a ordenarlo. Contanos tu caso en www.doppler.la"
+      ],
+      "telegram_message_id": 49,
+      "status": "pending",
+      "created_at": "2026-11-04T12:05:04.909Z"
     }
   ]
 }
