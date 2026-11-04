@@ -3,8 +3,10 @@
 Propone hilos para la cuenta de X de Doppler (lun/mié/vie). Se aprueban por Telegram.
 
 La rutina corre **todos los días** (`cron: 0 12 * * *` = 12:00 UTC / 9:00 ART):
-cada corrida drena las respuestas de Telegram y publica lo aprobado (si esperara
-a la próxima fecha, `getUpdates` ya habría descartado la respuesta a las 24 h).
+cada corrida drena la cola de respuestas de Telegram y publica lo aprobado.
+Los clicks de Aprobar/Rechazar los confirma al instante el webhook
+`doppler-web/app/api/telegram/route.ts` (encola en Redis); la publicación sigue
+siendo en la corrida.
 La redacción de borradores nuevos queda restringida a lun/mié/vie dentro del
 `playbook.md`, no en el cron.
 
@@ -29,6 +31,15 @@ Necesitás estas env vars en la config de la rutina:
   — de developer.x.com, app con permisos de escritura, tier Free.
 - `TELEGRAM_BOT_TOKEN` — de @BotFather.
 - `TELEGRAM_CHAT_ID` — de @userinfobot.
+- `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` — los mismos de Vercel (o `KV_REST_API_*`); la rutina lee la cola.
+
+En Vercel (`doppler-web`): `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TELEGRAM_WEBHOOK_SECRET`. Una vez deployado, registrar el webhook (una sola vez):
+
+```bash
+curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setWebhook" \
+  -d url=https://<dominio>/api/telegram -d secret_token=$TELEGRAM_WEBHOOK_SECRET \
+  -d 'allowed_updates=["message","callback_query"]'
+```
 
 ## Correr a mano
 

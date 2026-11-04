@@ -4,8 +4,7 @@ Se ejecuta **todos los días a las 9:00 ART**. Seguí los pasos en orden,
 trabajando desde la raíz del repo.
 
 Los pasos 1–4 (traer estado, drenar Telegram, publicar aprobados, avisar
-rechazados/podados) corren **siempre**: `getUpdates` de Telegram solo retiene
-las respuestas ~24 h, así que hay que drenarlas a diario o se pierden.
+rechazados/podados) corren **siempre**: las respuestas quedan en la cola de Redis hasta que se drenan.
 
 El paso 5 en adelante (investigar + redactar + mandar borradores nuevos) corre
 **solo los lunes, miércoles y viernes** — ver el chequeo al final del paso 4.
@@ -21,19 +20,27 @@ un clon limpio, por eso el `npm ci`.)
 
 ## 2. Leer respuestas de Telegram
 
-```bash
-curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getUpdates?offset=$(node -e 'console.log(require("./agent/state/drafts.json").last_telegram_update_id + 1)')"
-```
-
-Por cada `callback_query` con `data` tipo `approve:<id>` o `reject:<id>`:
-respondé el callback para que Telegram deje de mostrar el "reloj":
+Las respuestas las recibe el webhook de `doppler-web` (`/api/telegram`), que ya
+confirmó cada click en el momento (callback respondido + mensaje editado a
+✅/❌) y dejó el update en una cola de Redis. **No uses `getUpdates`**: con el
+webhook activo Telegram no lo entrega. Leé la cola (misma forma que `getUpdates`):
 
 ```bash
-curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/answerCallbackQuery" -d "callback_query_id=<ID>"
+KV_URL="${UPSTASH_REDIS_REST_URL:-$KV_REST_API_URL}"; KV_TOKEN="${UPSTASH_REDIS_REST_TOKEN:-$KV_REST_API_TOKEN}"
+curl -s -H "Authorization: Bearer $KV_TOKEN" "$KV_URL/lrange/telegram:updates/0/-1" \
+  | node -e 'const r=JSON.parse(require("fs").readFileSync(0,"utf8")).result;console.log(JSON.stringify({result:r.map(JSON.parse)}))'
 ```
 
-Si `answerCallbackQuery` devuelve `query is too old`, ignoralo — no es un paso
-fallido, solo significa que el botón se tocó hace rato.
+Guardá la salida en `TG_UPDATES` y anotá cuántos items vinieron (`N`). **Después
+de `saveState` (script de abajo)** vaciá solo lo leído, así un crash no pierde
+aprobaciones:
+
+```bash
+curl -s -H "Authorization: Bearer $KV_TOKEN" "$KV_URL/ltrim/telegram:updates/<N>/-1"
+```
+
+Los callbacks ya fueron respondidos por el webhook, no hace falta
+`answerCallbackQuery`.
 
 Aplicá los cambios de estado con un script inline (esto ya manda los rechazados
 a `history`; el paso 4 es solo el aviso por Telegram):
@@ -51,7 +58,7 @@ console.log(JSON.stringify({ approved, rejected, pruned, inbox }));
 '
 ```
 
-(pasás el JSON de `getUpdates` en `TG_UPDATES`.) Solo cuenta lo que viene del
+(pasás el JSON de la cola en `TG_UPDATES`.) Solo cuenta lo que viene del
 chat `TELEGRAM_CHAT_ID`; todo lo demás se ignora.
 
 `inbox` son los links de tweets que Ignacio mandó al bot para que los
